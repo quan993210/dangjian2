@@ -25,7 +25,7 @@ define('CACHE_TIME',	3600);
 define('DEBUG_MODE',	1);
 define('ADMIN_DIR', 	'admin/');
 //路径配置
-define('FILE_PATH', '/dangjian2');
+define('FILE_PATH', '');
 define('URL_PATH', 'http://' . $_SERVER['HTTP_HOST'] . FILE_PATH);
 define('ADMIN_TEMP_PATH', 'http://' . $_SERVER['HTTP_HOST'] . FILE_PATH . '/' . TEMP_ADMIN);
 
