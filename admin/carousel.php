@@ -36,7 +36,7 @@ function carousel()
         $image1 = crequest('image1');
         $image2 = crequest('image2');
         $image3 = crequest('image3');
-        $update_col = "image1 = '{$image1}', image2 = '{$image2}', image3 = '{$image3}'";
+        $update_col = "image1 = '{$image1}', image2 = '{$image2}', image3 = '{$image3}', adminid = '{$adminid}'";
         $sql = "UPDATE carousel SET {$update_col} WHERE id='{$id}'";
         $db->query($sql);
     }
