@@ -35,9 +35,9 @@ switch ($action)
 
 function get_test(){
     global $db;
-    if(isset($_POST['userid']) && !empty($_POST['userid']) ) {
+    if(isset($_POST['userid']) && !empty($_POST['userid']) && !empty($_POST['adminid']) ) {
         $userid = $_POST['userid'];
-        $adminid  = $_POST["admin_id"];
+        $adminid  = $_POST["adminid"];
         if(isset($_POST['testid']) && !empty($_POST['testid']) ) {
             $testid = intval(trim($_POST['testid']));
             $sql = "SELECT * FROM test WHERE testid ='{$testid}' and is_delete =0 and adminid='{$adminid}'ORDER BY testid DESC";
@@ -89,8 +89,8 @@ function get_test(){
 
 function creat_dati(){
     global $db;
-    if(!empty($_POST['userid']) && !empty($_POST['testid'])) {
-        $adminid  = $_POST["admin_id"];
+    if(!empty($_POST['userid']) && !empty($_POST['testid'])&& !empty($_POST['adminid'])) {
+        $adminid  = $_POST["adminid"];
         $now_time = now_time();
         $time = time();
         $userid = $_POST['userid'];
@@ -182,7 +182,7 @@ function submit_dati(){
     if(!empty($_POST['userid']) && !empty($_POST['testid']) && !empty($_POST['test_dati_id']) && !empty($_POST['timuid']) && !empty($_POST['test_timu_id']) && !empty($_POST['answer'])) {
         //检查答题用户
         $userid = $_POST['userid'];
-        $adminid  = $_POST["admin_id"];
+        $adminid  = $_POST["adminid"];
         $sql = "SELECT * FROM member WHERE userid='{$userid}' and adminid='{$adminid}'";
         $member = $db->get_row($sql);
         if(!is_array($member) && !$member){
@@ -248,7 +248,7 @@ function submit_test()
     if (!empty($_POST['userid']) && !empty($_POST['testid']) && !empty($_POST['test_dati_id'])) {
         //检查答题用户
         $userid = $_POST['userid'];
-        $adminid  = $_POST["admin_id"];
+        $adminid  = $_POST["adminid"];
         $sql = "SELECT * FROM member WHERE userid='{$userid}' and adminid='{$adminid}'";
         $member = $db->get_row($sql);
         if(!is_array($member) && !$member){
@@ -310,7 +310,7 @@ function my_test(){
     if (!empty($_POST['userid'])) {
         //检查答题用户
         $userid = $_POST['userid'];
-        $adminid  = $_POST["admin_id"];
+        $adminid  = $_POST["adminid"];
         $sql = "SELECT a.*,b.title,b.limit_count,b.limit_time FROM test_dati as a LEFT JOIN test as b on a.testid = b.testid WHERE a.userid='{$userid}' and a.adminid='{$adminid}'";
         $test_dati = $db->get_all($sql);
         if(!is_array($test_dati) && !$test_dati){

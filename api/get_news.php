@@ -31,8 +31,8 @@ switch ($action)
 
 function news_list(){
     global $db;
-    $adminid  = $_POST["admin_id"];
-    if(isset($_POST['catid']) && !empty($_POST['catid']) ) {
+    $adminid  = $_POST["adminid"];
+    if(isset($_POST['catid']) && !empty($_POST['catid'])&& !empty($_POST['adminid']) ) {
         $catid = intval(trim($_POST['catid']));
         //排序字段
         $order 	 	 = 'ORDER BY listorder DESC, id DESC';
@@ -54,8 +54,8 @@ function news_list(){
 
 function news_detail(){
     global $db;
-    $adminid  = $_POST["admin_id"];
-    if(isset($_POST['id']) && !empty($_POST['id']) ) {
+    $adminid  = $_POST["adminid"];
+    if(isset($_POST['id']) && !empty($_POST['id']) && !empty($_POST['adminid']) ) {
         $id = intval(trim($_POST['id']));
         $sql = "SELECT * FROM news WHERE id =$id and adminid='{$adminid}'";
         $news = $db->get_row($sql);
@@ -67,7 +67,7 @@ function news_detail(){
 
 function view_news(){
     global $db;
-    $adminid  = $_POST["admin_id"];
+    $adminid  = $_POST["adminid"];
     $userid = $_POST['userid'];
     $newsid = $_POST['newsid'];
     $last_update_timet = time();
@@ -94,7 +94,7 @@ function view_news(){
 
 function latest_news(){
     global $db;
-    $adminid  = $_POST["admin_id"];
+    $adminid  = $_POST["adminid"];
     $order 	 	 = 'ORDER BY id DESC';
     if(isset($_POST['catid']) && !empty($_POST['catid']) ) {
         $catid = intval(trim($_POST['catid']));

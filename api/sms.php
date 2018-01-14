@@ -10,13 +10,13 @@ set_include_path(dirname(dirname(__FILE__)));
 include_once("inc/init.php");
 if (!session_id()) session_start();
 
-if(isset($_GET['mobile']) && !empty($_GET['mobile'])) {
+if(isset($_GET['mobile']) && !empty($_GET['mobile'])&& !empty($_GET['adminid'])) {
     $mobile = $_GET['mobile'];
 } else {
    // exit('参数不对');
     showapierror('参数错误！');
 }
-$adminid  = $_POST["admin_id"];
+$adminid  = $_GET["adminid"];
 $sql = "SELECT * FROM member WHERE mobile=$mobile and adminid='{$adminid}'";
 $member = $db->get_row($sql);
 if(!$member){

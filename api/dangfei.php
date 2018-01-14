@@ -34,8 +34,8 @@ switch ($action)
 
 function my_dangfei(){
     global $db;
-    $adminid  = $_POST["admin_id"];
-    if(isset($_POST['mobile']) && !empty($_POST['mobile']) &&isset($_POST['userid']) && !empty($_POST['userid']) ) {
+    $adminid  = $_POST["adminid"];
+    if(isset($_POST['mobile']) && !empty($_POST['mobile']) &&isset($_POST['userid']) && !empty($_POST['userid']) && !empty($_POST['adminid']) ) {
         $mobile = trim($_POST['mobile']);
         $userid = trim($_POST['userid']);
         $sql = "SELECT a.*,b.title FROM dangfei_data as a LEFT JOIN dangfei as b on a.dangfeiid=b.id WHERE a.mobile =$mobile and a.userid =$userid and a.adminid='{$adminid}' ORDER BY id DESC";
@@ -48,7 +48,7 @@ function my_dangfei(){
 
 function create_order(){
     global $db;
-    $adminid  = $_POST["admin_id"];
+    $adminid  = $_POST["adminid"];
     $userid = isset($_POST['userid']) ? trim($_POST['userid']) : showapierror('userid_error');
     $sql = "SELECT * FROM member WHERE userid='{$userid}' and adminid='{$adminid}'";
     $userinfo = $db->get_row($sql);

@@ -32,8 +32,8 @@ switch ($action)
 
 function bind_user(){
     global $db;
-    $adminid  = $_POST["admin_id"];
-    if(isset($_POST['code']) && !empty($_POST['code']) && isset($_POST['mobile']) && !empty($_POST['mobile'])) {
+    $adminid  = $_POST["adminid"];
+    if(isset($_POST['code']) && !empty($_POST['code']) && isset($_POST['mobile']) && !empty($_POST['mobile']) && !empty($_POST['adminid'])) {
         $mobile = addslashes(trim($_POST['mobile']));
         $sql = "SELECT * FROM member WHERE mobile = '{$mobile}' and adminid='{$adminid}'";
         $member = $db->get_row($sql);
@@ -81,9 +81,9 @@ function bind_user(){
 
 function login_openid(){
     global $db;
-    if(isset($_POST['openid']) && !empty($_POST['openid'])) {
+    if(isset($_POST['openid']) && !empty($_POST['openid'])&& !empty($_POST['adminid'])) {
         $openid = $_POST['openid'];
-        $adminid  = $_POST["admin_id"];
+        $adminid  = $_POST["adminid"];
         $sql = "SELECT * FROM member WHERE openid = '{$openid}' and adminid='{$adminid}'";
         $member = $db->get_row($sql);
         showapisuccess($member);

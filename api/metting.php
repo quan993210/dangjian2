@@ -28,8 +28,8 @@ switch ($action)
 
 function get_metting(){
     global $db;
-    $adminid  = $_POST["admin_id"];
-    if(isset($_POST['mettingid']) && !empty($_POST['mettingid']) ) {
+    $adminid  = $_POST["adminid"];
+    if(isset($_POST['mettingid']) && !empty($_POST['mettingid'])  && !empty($_POST['adminid']) ) {
         $mettingid = intval(trim($_POST['mettingid']));
         $sql = "SELECT * FROM metting WHERE id =$mettingid and is_delete =0 and adminid='{$adminid}' ORDER BY id DESC";
         $metting = $db->get_row($sql);
@@ -43,9 +43,9 @@ function get_metting(){
 
 function my_metting(){
     global $db;
-    if(isset($_POST['userid']) && !empty($_POST['userid']) ) {
+    if(isset($_POST['userid']) && !empty($_POST['userid'])&& !empty($_POST['adminid']) ) {
         $userid = intval(trim($_POST['userid']));
-        $adminid  = $_POST["admin_id"];
+        $adminid  = $_POST["adminid"];
         $sql = "SELECT a.*,b.title FROM metting_sign as a LEFT JOIN metting as b on b.id=a.mettingid WHERE a.userid ='{$userid}' and a.adminid='{$adminid}'";
         $metting = $db->get_all($sql);
         foreach($metting as $key=>$val){
@@ -67,7 +67,7 @@ function sign(){
     $mettingid = $_GET['mettingid'];
     $lng = $_GET['lng'];
     $lat = $_GET['lat'];
-    $adminid  = $_GET["admin_id"];
+    $adminid  = $_GET["adminid"];
     if(!$userid || !$mettingid){
         showapierror('缺少签到参数,签到失败');
     }

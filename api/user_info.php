@@ -30,9 +30,9 @@ switch ($action)
 }
 function get_user_info(){
     global $db;
-    if(isset($_POST['mobile']) && !empty($_POST['mobile'])) {
+    if(isset($_POST['mobile']) && !empty($_POST['mobile'])&& !empty($_POST['adminid'])) {
         $mobile = addslashes(trim($_POST['mobile']));
-        $adminid  = $_POST["admin_id"];
+        $adminid  = $_POST["adminid"];
         $sql = "SELECT * FROM member WHERE mobile=$mobile and adminid='{$adminid}'";
         $member = $db->get_row($sql);
         showapisuccess($member);
@@ -43,9 +43,9 @@ function get_user_info(){
 
 function mod_user_info(){
     global $db;
-    if(is_array($_POST) && !empty($_POST['userid'])) {
+    if(is_array($_POST) && !empty($_POST['userid'])&& !empty($_POST['adminid'])) {
         $userid   = $_POST['userid'];
-        $adminid  = $_POST["admin_id"];
+        $adminid  = $_POST["adminid"];
         $set = "";
         if($_POST['mobile']){
             $mobile   = $_POST['mobile'];
@@ -175,7 +175,7 @@ function upload_avatar()
     // $session_name = $dir_type . '_' . $upload_name . '_img';
     // $_SESSION[$session_name] = $pic_path;
     //  $res = array("jsonrpc" => "2.0", "result" => "", "pic_path" => $pic_path);
-    $adminid  = $_POST["admin_id"];
+    $adminid  = $_POST["adminid"];
     $pic_path = "https://".$_SERVER["HTTP_HOST"].$pic_path;
     $sql = "UPDATE member SET avatar = '{$pic_path}' WHERE userid = '{$userid}' and adminid='{$adminid}'";
     $db->query($sql);
@@ -186,7 +186,7 @@ function upload_avatar()
 
 function update_gender(){
     global $db;
-    $adminid  = $_POST["admin_id"];
+    $adminid  = $_POST["adminid"];
     $userid = irequest('userid');
     $gender = irequest('gender');
     if(!$gender || !$userid){
