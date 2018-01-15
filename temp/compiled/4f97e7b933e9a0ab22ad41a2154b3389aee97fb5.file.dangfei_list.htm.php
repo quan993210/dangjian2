@@ -1,6 +1,6 @@
-<?php /* Smarty version Smarty-3.0.6, created on 2018-01-10 22:57:49
+<?php /* Smarty version Smarty-3.0.6, created on 2018-01-15 20:19:47
          compiled from "E:/xiangmu/phpstudy/WWW/dangjian2/temp/admin\dangfei/dangfei_list.htm" */ ?>
-<?php /*%%SmartyHeaderCode:162225a5629ed499850-15670129%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:205315a5c9c63521618-66454534%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
@@ -11,7 +11,7 @@ $_smarty_tpl->decodeProperties(array (
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '162225a5629ed499850-15670129',
+  'nocache_hash' => '205315a5c9c63521618-66454534',
   'function' => 
   array (
   ),

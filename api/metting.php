@@ -73,9 +73,21 @@ function sign(){
     }
     $sql = "SELECT * FROM member WHERE userid=$userid and adminid='{$adminid}'";
     $member = $db->get_row($sql);
+
+    $sql = "SELECT * FROM metting WHERE id=$mettingid and adminid='{$adminid}'";
+    $metting = $db->get_row($sql);
+
+    if($metting['flg'] == 1){
+        if($metting['identity'] != $member['identity'] || $metting['position'] != $member['position'] || $metting['is_party_affairs'] != $member['is_party_affairs'] || $metting['is_discipline'] != $member['is_discipline'] ||$metting['is_prepare'] != $member['is_prepare'] ||$metting['is_retire'] != $member['is_retire'] ){
+            showapierror('不是会议指定人群，签到失败');
+        }
+    }
+
     $sign_time = date('Y-m-d H:i:s',time());
     $sql = "SELECT * FROM metting_sign WHERE userid = '{$userid}' and mettingid = '{$mettingid}' and adminid='{$adminid}'";
     $metting = $db->get_row($sql);
+
+
     if(is_array($metting) && $metting){
 
     }else{

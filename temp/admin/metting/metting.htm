@@ -28,22 +28,22 @@
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="1">
     <tr>
       <td class="label">签到会场标题：</td>
-	  <td><input type="text" name="title" value="{$metting.title}"  required="required" size="32" /></td>
+	  <td><input type="text" name="info[title]" value="{$metting.title}"  required="required" size="32" /></td>
     </tr>
     <tr>
         <td class="label">应参加人数：</td>
-        <td><input type="text" name="sum" value="{$metting.sum}"  required="required" size="32" /></td>
+        <td><input type="text" name="info[sum]" value="{$metting.sum}"  required="required" size="32" /></td>
     </tr>
 	<tr>
 		<td class="label">开始时间：</td>
-		<td><input type="text" name="start_time" onclick="return select_time()"  required="required" value="{$metting.start_time}" size="32" /></td>
+		<td><input type="text" name="info[start_time]" onclick="return select_time()"  required="required" value="{$metting.start_time}" size="32" /></td>
 	</tr>
     <tr>
         <td class="label">签到会会场添加标签：</td>
-        <td><label><input name="flg" id="flg" type="checkbox" value="1" />（勾选后出现用户标签选择，不勾则全部参加） </label> </td>
+        <td><label><input name="info[flg]" id="flg" type="checkbox" value="1" {if $metting.flg == 1}checked {/if}/>（勾选后出现用户标签选择，不勾则全部参加） </label> </td>
     </tr>
 </table>
-    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="1" class="bq" style="display: none">
+    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="1" class="bq" {if $metting.flg == 0}style="display: none" {/if} >
     <tr>
         <td class="label">身份：</td>
         <td>

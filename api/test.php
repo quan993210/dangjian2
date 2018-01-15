@@ -298,6 +298,10 @@ function submit_test()
         $test_dati = $db->get_row($sql);
         $test_dati['complete'] = $complete;
         $test_dati['test_timu_ids'] = $test_timu_ids;
+
+        $sql = "SELECT * FROM test_dati_detail WHERE test_dati_id='{$test_dati_id}' and userid = '{$userid}' and testid =  '{$testid}' and adminid='{$adminid}' and is_correct = 2";
+        $test_dati['error_timu'] = $db->get_all($sql);
+
         showapisuccess($test_dati);
 
     } else {

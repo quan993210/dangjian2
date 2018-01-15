@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.6, created on 2018-01-10 22:55:43
+<?php /* Smarty version Smarty-3.0.6, created on 2018-01-15 21:00:51
          compiled from "E:/xiangmu/phpstudy/WWW/dangjian2/temp/admin\vote/vote_detail.htm" */ ?>
-<?php /*%%SmartyHeaderCode:241735a56296f6c9136-80091029%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:186425a5ca603c886e0-60015281%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     '11074c6c3229a355eae3a17dd6119e11092316d6' => 
     array (
       0 => 'E:/xiangmu/phpstudy/WWW/dangjian2/temp/admin\\vote/vote_detail.htm',
-      1 => 1515596127,
+      1 => 1515596191,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '241735a56296f6c9136-80091029',
+  'nocache_hash' => '186425a5ca603c886e0-60015281',
   'function' => 
   array (
   ),
@@ -61,7 +61,7 @@ $_smarty_tpl->decodeProperties(array (
             <td><?php if ($_smarty_tpl->getVariable('vote')->value['type']==1){?>选择题<?php }else{ ?>多选题<?php }?></td>
         </tr>
         <tr>
-            <td class="label">选择票数</td>
+            <td class="label">选项投票</td>
             <td></td>
         </tr>
         <?php  $_smarty_tpl->tpl_vars['option'] = new Smarty_Variable;

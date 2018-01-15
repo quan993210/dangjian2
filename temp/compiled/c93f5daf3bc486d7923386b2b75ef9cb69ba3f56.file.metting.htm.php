@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.6, created on 2018-01-08 22:11:31
+<?php /* Smarty version Smarty-3.0.6, created on 2018-01-15 20:21:09
          compiled from "E:/xiangmu/phpstudy/WWW/dangjian2/temp/admin\metting/metting.htm" */ ?>
-<?php /*%%SmartyHeaderCode:110705a537c1306a137-52010219%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:119635a5c9cb50b7335-51475082%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     'c93f5daf3bc486d7923386b2b75ef9cb69ba3f56' => 
     array (
       0 => 'E:/xiangmu/phpstudy/WWW/dangjian2/temp/admin\\metting/metting.htm',
-      1 => 1515420312,
+      1 => 1516018856,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '110705a537c1306a137-52010219',
+  'nocache_hash' => '119635a5c9cb50b7335-51475082',
   'function' => 
   array (
   ),
@@ -57,25 +57,25 @@ $_smarty_tpl->decodeProperties(array (
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="1">
     <tr>
       <td class="label">签到会场标题：</td>
-	  <td><input type="text" name="title" value="<?php echo $_smarty_tpl->getVariable('metting')->value['title'];?>
+	  <td><input type="text" name="info[title]" value="<?php echo $_smarty_tpl->getVariable('metting')->value['title'];?>
 "  required="required" size="32" /></td>
     </tr>
     <tr>
         <td class="label">应参加人数：</td>
-        <td><input type="text" name="sum" value="<?php echo $_smarty_tpl->getVariable('metting')->value['sum'];?>
+        <td><input type="text" name="info[sum]" value="<?php echo $_smarty_tpl->getVariable('metting')->value['sum'];?>
 "  required="required" size="32" /></td>
     </tr>
 	<tr>
 		<td class="label">开始时间：</td>
-		<td><input type="text" name="start_time" onclick="return select_time()"  required="required" value="<?php echo $_smarty_tpl->getVariable('metting')->value['start_time'];?>
+		<td><input type="text" name="info[start_time]" onclick="return select_time()"  required="required" value="<?php echo $_smarty_tpl->getVariable('metting')->value['start_time'];?>
 " size="32" /></td>
 	</tr>
     <tr>
         <td class="label">签到会会场添加标签：</td>
-        <td><label><input name="flg" id="flg" type="checkbox" value="1" />（勾选后出现用户标签选择，不勾则全部参加） </label> </td>
+        <td><label><input name="info[flg]" id="flg" type="checkbox" value="1" <?php if ($_smarty_tpl->getVariable('metting')->value['flg']==1){?>checked <?php }?>/>（勾选后出现用户标签选择，不勾则全部参加） </label> </td>
     </tr>
 </table>
-    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="1" class="bq" style="display: none">
+    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="1" class="bq" <?php if ($_smarty_tpl->getVariable('metting')->value['flg']==0){?>style="display: none" <?php }?> >
     <tr>
         <td class="label">身份：</td>
         <td>

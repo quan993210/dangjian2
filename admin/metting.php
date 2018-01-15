@@ -151,9 +151,6 @@ function do_add_metting()
     }else{
         $data['flg'] = 0;
     }
-    $data['title']    = crequest('title');
-    $data['start_time']	  = crequest('start_time');
-    $data['sum']	  = irequest('sum');
     $data['add_time'] = time();
     $data['add_time_format'] = now_time();
     $data['adminid'] = $adminid;
@@ -204,11 +201,7 @@ function do_mod_metting()
     }else{
         $data['flg'] = 0;
     }
-    $data['title']    = crequest('title');
-    $data['start_time']	  = crequest('start_time');
-    $data['sum']	  = irequest('sum');
-    $data['add_time'] = time();
-    $data['add_time_format'] = now_time();
+
     check_null($data['title'], 			'会议标题');
     check_null($data['sum'], 			'参加人数');
     check_null($data['start_time'], 			'开始时间');
