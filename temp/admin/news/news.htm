@@ -35,10 +35,10 @@ function select_time()
 <form name="frm" action="news.php" method="post" enctype="multipart/form-data">
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="1">
     <tr>
-      <td class="label">内容分类：</td>
+      <td class="label">新闻分类：</td>
 	  <td colspan="6">
         <select name="info[catid]" id="catid">
-            <option value="0">选择内容分类</option>
+            <option value="0">选择新闻分类</option>
             {section name=loop loop=$news_category}
             <option value="{$news_category[loop].catid}" {if $news.catid eq $news_category[loop].catid}selected{/if}>{$news_category[loop].catname}</option>
             {section name=subloop loop=$news_category[loop].sub}
@@ -49,11 +49,11 @@ function select_time()
       </td>
     </tr>
     <tr>
-      <td class="label">内容标题：</td>
+      <td class="label">新闻标题：</td>
 	  <td colspan="6"><input type="text" name="info[title]" value="{$news.title}" size="48" /></td>
     </tr>
 	<tr>
-		<td class="label">内容：</td>
+		<td class="label">新闻：</td>
 		<td colspan="6">
 			<textarea id="content" name="info[content]" style="width:700px;height:300px;">{$news.content}</textarea>
 			<script type="text/javascript">
