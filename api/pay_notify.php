@@ -11,13 +11,7 @@ set_include_path(dirname(dirname(__FILE__)));
 include_once("inc/init.php");
 if (!session_id()) session_start();
 global $db;
-$adminid  = $_POST["admin_id"];
-$sql = "SELECT * FROM admin WHERE id = '{$adminid}'";
-$res = $db->get_row($sql);
-define('APPID',$res['appid']);
-define('MCH_ID',$res['mch_id']);
-define('WX_KEY',$res['wx_key']);
-define('APPSECRET',$res['appsecret']);
+
 $post = post_data();    //接受POST数据XML个数
 $post_data = xmlToObject($post);   //微信支付成功，返回回调地址url的数据：XML转数组Array
 $postSign = $post_data['sign'];
@@ -27,10 +21,23 @@ unset($post_data['sign']);
  *  并校验返回的【订单金额是否与商户侧的订单金额】一致，
  *  防止数据泄漏导致出现“假通知”，造成资金损失。
  */
-$KEY =         WX_KEY;    //微信支付key
-$user_sign = MakeSign($post_data,$KEY);
+
 
 if($post_data['return_code']=='SUCCESS'&&$postSign){
+
+    $sql = "SELECT * FROM  `order` WHERE ordersn='{$post_data['out_trade_no']}'";
+    $orderinfo = $db->get_row($sql);
+
+    $adminid  = $_POST["adminid"];
+    $sql = "SELECT * FROM admin WHERE id = '{$orderinfo['adminid']}'";
+    $res = $db->get_row($sql);
+    define('APPID',$res['appid']);
+    define('MCH_ID',$res['mch_id']);
+    define('WX_KEY',$res['wx_key']);
+    define('APPSECRET',$res['appsecret']);
+
+    $KEY =         WX_KEY;    //微信支付key
+    $user_sign = MakeSign($post_data,$KEY);
 
     if($postSign !=$user_sign){
         $error['errcode'] = '100005';
@@ -40,8 +47,7 @@ if($post_data['return_code']=='SUCCESS'&&$postSign){
         exit();
     }
 
-    $sql = "SELECT * FROM  `order` WHERE ordersn='{$post_data['out_trade_no']}' and adminid='{$adminid}'";
-    $orderinfo = $db->get_row($sql);
+
 //查询订单是否存在
     if (!$orderinfo){
         $error['errcode'] = '100001';
@@ -91,7 +97,7 @@ if($post_data['return_code']=='SUCCESS'&&$postSign){
 }else{
     $error['errcode'] = '100004';
     $error['errmsg'] = $postSign['return_msg'];
-    $error['adminid'] = $adminid;
+   //$error['adminid'] = $adminid;
     wx_error_log(__FILE__,$error);
     insert_error_log($error);
     exit();

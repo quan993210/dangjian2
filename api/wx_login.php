@@ -10,7 +10,7 @@ set_include_path(dirname(dirname(__FILE__)));
 include_once("inc/init.php");
 if (!session_id()) session_start();
 global $db;
-$adminid  = $_POST["admin_id"];
+$adminid  = $_POST["adminid"];
 $sql = "SELECT * FROM admin WHERE id = '{$adminid}'";
 $res = $db->get_row($sql);
 define('APPID',$res['appid']);
