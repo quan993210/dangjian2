@@ -6,7 +6,7 @@
  * Time: 21:23
  * 党费
  */
-define('WE_NOTIFY_URL','https://dangjian.famishare.me/api/pay_notify.php');
+define('WE_NOTIFY_URL','https://dangjian2.jlzhdj.com/api/pay_notify.php');
 
 set_include_path(dirname(dirname(__FILE__)));
 include_once("inc/init.php");
