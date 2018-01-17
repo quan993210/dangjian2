@@ -302,7 +302,7 @@ function submit_test()
         $sql = "SELECT * FROM test_dati_detail WHERE test_dati_id='{$test_dati_id}' and userid = '{$userid}' and testid =  '{$testid}' and adminid='{$adminid}' and is_correct = 2";
         $test_dati['error_timu'] = $db->get_all($sql);
         foreach($test_dati['error_timu'] as $key=>$val){
-            $sql = "SELECT title FROM timu WHERE timuid='{$val['test_timu_id']}' and adminid='{$adminid}'";
+            $sql = "SELECT title FROM timu WHERE timuid='{$val['timuid']}' and adminid='{$adminid}'";
             $timu = $db->get_row($sql);
             $test_dati['error_timu'][$key]['title'] = $timu['title'];
         }
