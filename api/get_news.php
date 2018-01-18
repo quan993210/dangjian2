@@ -59,6 +59,15 @@ function news_detail(){
         $id = intval(trim($_POST['id']));
         $sql = "SELECT * FROM news WHERE id =$id and adminid='{$adminid}'";
         $news = $db->get_row($sql);
+        if($_POST['userid']){
+            $sql = "SELECT * FROM vote_data WHERE userid ='{$_POST['userid']}' and voteid='{$news['voteid']}' and adminid='{$adminid}'";
+            $vote_data = $db->get_row($sql);
+            if($vote_data){
+                $news['is_vote'] = 1;
+            }else{
+                $news['is_vote'] = 0;
+            }
+        }
         showapisuccess($news);
     }else{
         showapierror('参数错误！');
