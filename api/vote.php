@@ -30,6 +30,11 @@ function get_vote(){
         $voteid = intval(trim($_POST['voteid']));
         $sql = "SELECT * FROM vote WHERE id =$voteid and is_delete =0 and adminid='{$adminid}'";
         $vote = $db->get_row($sql);
+        if($vote['end_time'] > time()){
+            $vote['isend'] = 1;
+        }else{
+            $vote['isend'] = 0;
+        }
         $sql = "SELECT * FROM vote_option WHERE vote_id =$voteid and adminid='{$adminid}'";
         $vote_option = $db->get_all($sql);
         $vote['option'] = $vote_option;
