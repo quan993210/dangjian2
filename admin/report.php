@@ -114,9 +114,9 @@ function do_add_report()
     $info['add_time_format']	= now_time();
     $info['adminid'] = $adminid;
     $sql = "SELECT * FROM report WHERE adminid = '{$adminid}' and time='{$time}'";
-    $dangfei = $db->get_row($sql);
-    if($dangfei){
-        alert_back('同时间报表只能提交一次');
+    $report = $db->get_row($sql);
+    if($report){
+        alert_back('同时间段报表只能提交一次');
     }
     $reportid = $db->insert('report',$info);
     $aid  = $_SESSION['admin_id'];

@@ -69,10 +69,14 @@
 		<tr align="center">
 		  <td><span><input name="checkboxes[]" type="checkbox" value="{$report_list[loop].id}" />{$report_list[loop].id}</span></td>
           <td class="first-cell"><span>{$report_list[loop].title}</span></td>
-          <td>{$report_list[loop].add_time_format}</td>
+          <td>
+			  {$report_list[loop].time|date_format:"%Y-%m"}</td>
 		  <td>
-          	<a href="report.php?action=mod_report&id={$report_list[loop].id}&now_page={$now_page}">详情</a> |
-          </td>
+          	<a href="report.php?action=mod_report&id={$report_list[loop].id}&now_page={$now_page}">详情</a>
+			  {if $report_list[loop].status == 0}
+			  |<a href="report.php?action=mod_report&id={$report_list[loop].id}&now_page={$now_page}">修改</a>
+			  {/if}
+		  </td>
 		</tr>  
 	{/section}
     <tr>
