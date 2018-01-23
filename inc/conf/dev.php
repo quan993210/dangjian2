@@ -17,6 +17,7 @@ define('CHAR_SET', 'utf-8');
 
 //模板配置
 define('TEMPLATE',      'smarty');
+define('TEMP_DANG', 	'temp/dangwei');
 define('TEMP_PAGE', 	'temp/default');
 define('TEMP_ADMIN',  	'temp/admin');
 define('TEMP_COMPILE',	'temp/compiled');
@@ -25,12 +26,14 @@ define('CACHE_TIME',	3600);
 define('DEBUG_MODE',	1);
 define('ADMIN_DIR', 	'admin/');
 define('MEMBER_DIR', 	'member/');
+define('DANG_DIR', 	'dangwei/');
 
 //路径配置
 define('FILE_PATH', '');
 define('URL_PATH', 'http://' . $_SERVER['HTTP_HOST'] . FILE_PATH);
 define('FRONT_TEMP_PATH', 'http://' . $_SERVER['HTTP_HOST'] . FILE_PATH . '/' . TEMP_PAGE);
 define('ADMIN_TEMP_PATH', 'http://' . $_SERVER['HTTP_HOST'] . FILE_PATH . '/' . TEMP_ADMIN);
+define('DANG_TEMP_PATH', 'http://' . $_SERVER['HTTP_HOST'] . FILE_PATH . '/' . TEMP_DANG);
 
 
 //网站名称

@@ -52,6 +52,15 @@
 	if (strpos(CURRENT_PATH, ADMIN_DIR) === false)
 	{
 		$smarty->template_dir 	= ROOT_PATH . TEMP_PAGE;
+
+		if (strpos(CURRENT_PATH, DANG_DIR) === false)
+		{
+			$smarty->template_dir 	= ROOT_PATH . TEMP_PAGE;
+		}else{
+			$smarty->template_dir 	= ROOT_PATH . TEMP_DANG;
+			//党委是否登录
+			check_dangwei_login();
+		}
 	}
 	else 
 	{		
@@ -79,6 +88,7 @@
 	$smarty->assign('sys_name', SYS_NAME);
 	$smarty->assign('url_path', URL_PATH);
 	$smarty->assign('admin_temp_path', ADMIN_TEMP_PATH);
+    $smarty->assign('dangwei_temp_path', DANG_TEMP_PATH);
 	
 	//初始化数据库连接
 	$db = new cls_mysql(DB_HOST, DB_USER, DB_PASS, DB_NAME, CHAR_SET, 0, 1);
