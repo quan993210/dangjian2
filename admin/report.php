@@ -46,7 +46,7 @@ function report_list()
 
     //搜索条件
     $adminid  = $_SESSION["admin_id"];
-    $con = "WHERE adminid = $adminid";
+    $con = "WHERE status = 1 and adminid = $adminid";
     //关键字
     $keyword = crequest('keyword');
     $starttime = crequest('starttime');
@@ -59,13 +59,11 @@ function report_list()
     }
     if (!empty($starttime))
     {
-        $stime = strtotime($starttime);
-        $con .= " AND tine > '{$stime}' ";
+        $con .= " AND time >= '{$starttime}' ";
     }
     if (!empty($endtime))
     {
-        $etime = strtotime($endtime);
-        $con .= " AND tine < '{$etime}' ";
+        $con .= " AND time <= '{$endtime}' ";
     }
     //排序字段
     $order 	 	 = 'ORDER BY id DESC';
@@ -109,11 +107,10 @@ function do_add_report()
     global $db;
     $adminid  = $_SESSION["admin_id"];
     $info = $_POST['info'];
-    $time = $info['time'] = strtotime($info['time']);
     $info['add_time']	= time();
     $info['add_time_format']	= now_time();
     $info['adminid'] = $adminid;
-    $sql = "SELECT * FROM report WHERE adminid = '{$adminid}' and time='{$time}'";
+    $sql = "SELECT * FROM report WHERE adminid = '{$adminid}' and time='{$info['time']}'";
     $report = $db->get_row($sql);
     if($report){
         alert_back('同时间段报表只能提交一次');
@@ -237,72 +234,3 @@ function del_sel_report()
     href_locate($url_to);
 }
 
-/*------------------------------------------------------ */
-//-- 删除新闻图片
-/*------------------------------------------------------ */
-function del_one_img()
-{
-    $img_name = crequest('img_name');
-    //del_img($img_name);
-
-    $id = irequest('id');
-    $now_page = irequest('now_page');
-
-    global $db;
-    $replace_img = $img_name . '|';
-    $sql = "UPDATE report SET imgs = replace(imgs, '{$replace_img}', '') WHERE id = '{$id}'";
-    $db->query($sql);
-
-    $url_to = "report.php?action=mod_report&id={$id}&now_page=$now_page";
-    href_locate($url_to, '删除成功');
-}
-
-/*------------------------------------------------------ */
-//-- 新闻分类
-/*------------------------------------------------------ */
-function get_report_category()
-{
-    global $db;
-    $adminid  = $_SESSION["admin_id"];
-
-    $sql = "SELECT catid, catname FROM report_category WHERE pid = 0 and adminid='{$adminid}' ORDER BY listorder";
-    $res = $db->get_all($sql);
-    $num = count($res);
-
-    for ($i = 0; $i < $num; $i++)
-    {
-        $catid  = $res[$i]['catid'];
-        $sql = "SELECT catid, catname FROM report_category WHERE pid = {$catid} and adminid='{$adminid}' ORDER BY listorder";
-        $res[$i]['sub'] = $db->get_all($sql);
-    }
-
-    return $res;
-}
-
-/*------------------------------------------------------ */
-//-- 检查分类是否存在子分类
-/*------------------------------------------------------ */
-function checkChild()
-{
-    global $db;
-    $adminid  = $_SESSION["admin_id"];
-    $catid  = irequest('catid');
-    $sql = "SELECT catid, catname FROM report_category WHERE pid = {$catid} and adminid='{$adminid}' ORDER BY listorder";
-    $res = $db->get_all($sql);
-    if(is_array($res) && $res){
-        echo json_encode(1);
-    }else{
-        echo json_encode(0);
-    }
-    exit;
-}
-
-function get_vote()
-{
-    global $db;
-    $adminid  = $_SESSION["admin_id"];
-    $sql = "SELECT id, title FROM vote WHERE adminid='{$adminid}' ORDER BY id DESC ";
-    $vote = $db->get_all($sql);
-
-    return $vote;
-}

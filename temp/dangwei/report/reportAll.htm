@@ -29,81 +29,64 @@ function select_time()
 <h1>
 <span class="action-span"><a href="javascript:history.back();">返回</a></span>
 <span class="action-span1"><a href="">{$sys_name} 管理中心</a>  - {$page_title} </span>
-	<span class="action-span"><a href="report.php?action=export">导出</a></span>
 <div style="clear:both"></div>
 </h1>
 <div id="tabbody-div">
+	<div class="form-div">
+		<form action="" name="searchForm" onsubmit="">
+			<input type="text" onclick="return select_time()" name="starttime" placeholder="请选择开始时间" value="{$starttime}" size="15" />-
+			<input type="text" onclick="return select_time()" name="endtime" placeholder="请选择结束时间" value="{$endtime}" size="15" />
+			<input type="submit" value="搜索" class="button" />
+			<a href="report.php?action=export" style="height: 19px;background: #DDDDDD; border: 1px #DDDDDD solid;padding: 2px 8px 0px;display: inline-block;">导出</a>
+		</form>
+	</div>
 <form name="frm" action="report.php" method="post" enctype="multipart/form-data">
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="1">
+	<tr>
+		<td class="label">党费缴纳金额：</td>
+		<td colspan="6"><input type="text" name="info[money]" readonly="readonly" value="{$report.money}" size="32" />元</td>
+	</tr>
+	<tr>
+		<td class="label">缴纳党费人数：</td>
+		<td colspan="6"><input type="text" name="info[num]" readonly="readonly" value="{$report.num}" size="32" />位</td>
+	</tr>
+	<tr>
+		<td class="label">使用党建经费：</td>
+		<td colspan="6"><input type="text" name="info[use_funds]" readonly="readonly" value="{$report.use_funds}" size="32" />元</td>
+	</tr>
+	<tr>
+      <td class="label">使用党费：</td>
+	  <td colspan="6"><input type="text" name="info[use_money]" readonly="readonly" value="{$report.use_money}" size="32" />元</td>
+    </tr>
+	<tr>
+		<td class="label">获得荣誉（国家级）：</td>
+		<td colspan="6"><input type="text" name="info[honor_country]" readonly="readonly" value="{$report.honor_country}" size="32" />个</td>
+	</tr>
+	<tr>
+		<td class="label">获得荣誉（省部级）：</td>
+		<td colspan="6"><input type="text" name="info[honor_province]" readonly="readonly" value="{$report.honor_province}" size="32" />个</td>
+	</tr>
+	<tr>
+		<td class="label">获得荣誉（市厅级）：</td>
+		<td colspan="6"><input type="text" name="info[honor_city]" readonly="readonly" value="{$report.honor_city}" size="32" />个</td>
+	</tr>
+	<tr>
+		<td class="label">稿件发布（国家级）：</td>
+		<td colspan="6"><input type="text" name="info[file_country]" readonly="readonly" value="{$report.file_country}" size="32" />篇</td>
+	</tr>
+	<tr>
+		<td class="label">稿件发布（省部级）：</td>
+		<td colspan="6"><input type="text" name="info[file_province]" readonly="readonly" value="{$report.file_province}" size="32" />篇</td>
+	</tr>
+	<tr>
+		<td class="label">稿件发布（市厅级）：</td>
+		<td colspan="6"><input type="text" name="info[file_city]" readonly="readonly" value="{$report.file_city}" size="32" />篇</td>
+	</tr>
+
+
     <tr>
-      <td class="label">标题<em style="color: red">*</em>：</td>
-	  <td colspan="6"><input type="text" name="info[title]"  readonly="readonly" value="{$report.title}" size="48" /></td>
+      <td colspan="2" align="center"><a href="report.php?action=report_list">查询具体报表</a></td>
     </tr>
-	<tr>
-		<td class="label">添加时间<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[time]" required="required" onclick="return select_time()"  value="{$report.time}" /></td>
-	</tr>
-
-	<tr>
-		<td class="label">党费缴纳金额<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[money]" required="required" value="{$report.money}" size="32" />元</td>
-	</tr>
-	<tr>
-		<td class="label">缴纳党费人数<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[num]" required="required" value="{$report.num}" size="32" />位</td>
-	</tr>
-	<tr>
-		<td class="label">使用党建经费<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[use_funds]" required="required" value="{$report.use_funds}" size="32" />元</td>
-	</tr>
-	<tr>
-      <td class="label">使用党费<em style="color: red">*</em>：</td>
-	  <td colspan="6"><input type="text" name="info[use_money]" required="required" value="{$report.use_money}" size="32" />元</td>
-    </tr>
-	<tr>
-		<td class="label">上缴党费百分比<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[paid_dues]" required="required" value="{$report.paid_dues}" size="32" />%</td>
-	</tr>
-	<tr>
-		<td class="label">余留党费百分比<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[remaining_dues]" required="required" value="{$report.remaining_dues}" size="32" />%</td>
-	</tr>
-	<tr>
-		<td class="label">获得荣誉（国家级）<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[honor_country]" required="required" value="{$report.honor_country}" size="32" />个</td>
-	</tr>
-	<tr>
-		<td class="label">获得荣誉（省部级）<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[honor_province]" required="required" value="{$report.honor_province}" size="32" />个</td>
-	</tr>
-	<tr>
-		<td class="label">获得荣誉（市厅级）<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[honor_city]" required="required" value="{$report.honor_city}" size="32" />个</td>
-	</tr>
-	<tr>
-		<td class="label">稿件发布（国家级）<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[file_country]" required="required" value="{$report.file_country}" size="32" />篇</td>
-	</tr>
-	<tr>
-		<td class="label">稿件发布（省部级）<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[file_province]" required="required" value="{$report.file_province}" size="32" />篇</td>
-	</tr>
-	<tr>
-		<td class="label">稿件发布（市厅级）<em style="color: red">*</em>：</td>
-		<td colspan="6"><input type="text" name="info[file_city]" required="required" value="{$report.file_city}" size="32" />篇</td>
-	</tr>
-
-
-    <!--<tr>
-      <td colspan="2" align="center">
-      	<input type="hidden" value="{$action}" name="action" />
-      	<input type="hidden" value="{$now_page}" name="now_page" />
-      	<input type="hidden" value="{$report.id}" name="id" />
-		  {if $action="do_add_report"}
-      	<input type="submit" value="确定">
-		  {/if}
-      </td>
-    </tr>-->
 </table>
 </form>
 

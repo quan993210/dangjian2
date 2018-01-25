@@ -111,12 +111,11 @@ function news_list()
 function add_news()
 {
 	global $smarty;
-	$lables = [['id'=>'1','name'=>'支部党员大会'], ['id'=>'2','name'=>'支部学习'], ['id'=>'3','name'=>'党小组会议']];
 
 	//新闻分类
 	$smarty->assign('news_category',  get_news_category());
 	$smarty->assign('vote',  get_vote());
-	$smarty->assign('lables',  $lables);
+	$smarty->assign('lables',  get_lables());
 	
 	if (!empty($_SESSION['image1']))
 	{
@@ -182,7 +181,7 @@ function mod_news()
 	$now_page = irequest('now_page');
 	$smarty->assign('now_page', $now_page);
 
-	$lables = [['id'=>'1','name'=>'支部党员大会'], ['id'=>'2','name'=>'支部学习'], ['id'=>'3','name'=>'党小组会议']];
+	$lables = get_labes();
 	foreach($lables as $key=>$val){
 		if(strstr("{$row['lables']}","{$val['id']}")){
 			$lables[$key]['flg'] = 1;
@@ -327,6 +326,14 @@ function get_news_category()
 		$res[$i]['sub'] = $db->get_all($sql);
 	}
 	
+	return $res;
+}
+
+function get_lables()
+{
+	global $db;
+	$sql = "SELECT id,name FROM lable WHERE is_delete=0 ORDER BY listorder DESC";
+	$res = $db->get_all($sql);
 	return $res;
 }
 

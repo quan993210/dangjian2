@@ -31,7 +31,7 @@ switch ($action)
 }
 
 /*------------------------------------------------------ */
-//-- 管理员列表
+//-- 党支部列表
 /*------------------------------------------------------ */	
 function admin_list()
 {
@@ -45,7 +45,7 @@ function admin_list()
 	//排序字段
 	$sort_col 	 = crequest('sort_col');	
 	$asc_or_desc = crequest('asc_or_desc');
-	//$order 	 	 = 'ORDER BY id';        
+	$order 	 	 = 'ORDER BY id';
 	
 	//列表信息
 	$now_page 	= irequest('page');
@@ -68,18 +68,18 @@ function admin_list()
 	$tbl = array('tbl' => 'admin', 'col1' => 'userid');			
 	$smarty->assign('tbl', $tbl);
 	
-    $smarty->assign('page_title', '管理员列表');
+    $smarty->assign('page_title', '党支部列表');
 	$smarty->display('admin/admin_list.htm');	
 }
 
 /*------------------------------------------------------ */
-//-- 添加管理员
+//-- 添加党支部
 /*------------------------------------------------------ */	
 function add_admin()
 {
 	global $db, $smarty;
 	
-	$page_title = '添加管理员';
+	$page_title = '添加党支部';
     $smarty->assign('page_title', $page_title);
 	
 	$smarty->assign('action', 'do_add_admin');
@@ -87,9 +87,9 @@ function add_admin()
 }
 
 /*------------------------------------------------------ */
-//-- 添加管理员
+//-- 添加党支部
 /*------------------------------------------------------ */	
-function do_add_admin()
+/*function do_add_admin()
 {
 	global $db;
 	
@@ -120,15 +120,15 @@ function do_add_admin()
 	$db->query($sql);
 	
 	$aid  = $_SESSION['admin_id'];
-	$text = '添加管理员，添加管理员ID：' . $db->insert_id();
+	$text = '添加党支部，添加党支部ID：' . $db->insert_id();
 	operate_log($aid, 1, 1, $text);
 
 	$url_to = "admin.php?action=list";
 	url_locate($url_to, '添加成功');	
-}
+}*/
 
 /*------------------------------------------------------ */
-//-- 修改管理员权限
+//-- 修改党支部权限
 /*------------------------------------------------------ */	
 function mod_admin()
 {	
@@ -139,7 +139,7 @@ function mod_admin()
 	$res = $db->get_row($sql);
 	$smarty->assign('admin', $res);
 	
-    $page_title = '管理员信息修改';
+    $page_title = '党支部信息修改';
     $smarty->assign('page_title', $page_title);
 	
 	$smarty->assign('now_page' , irequest('now_page'));
@@ -148,37 +148,30 @@ function mod_admin()
 }
 
 /*------------------------------------------------------ */
-//-- 修改管理员权限
+//-- 修改党支部权限
 /*------------------------------------------------------ */	
 function do_mod_admin()
 {
 	global $db;
-	
-    $id 	  = irequest('id');
-	$userid   = crequest('username');
-    $pwd 	  = crequest('pwd');
-	$email    = crequest('email');
-	
-	$admin_group = '';
-	$code 		 = '';
-	
-	$sql = "UPDATE admin set userid = '{$userid}', email = '{$email}' ";
-	$sql .= $pwd == '' ? "WHERE id = '{$id}'" : ", password = '" . md5($pwd) . "' WHERE id = '{$id}'";
-	$db->query($sql);
-	
-	$aid  = $_SESSION['admin_id'];
-	$text = '修改管理员信息，修改管理员ID：' . $id;
-	operate_log($aid, 1, 2, $text);
+	$id  = irequest('id');
+	$info = $_POST['info'];
+	$info['password'] = $info['password'] == '' ? '': md5($info['password']);
+
+	$db->update('admin',$info,"id=$id");
+
+	$aid  = $id;
+	$text = '修改党支部信息，修改党支部ID：' . $id;
+	dangwei_operate_log($aid, 1, 2, $text);
 
 	$now_page = irequest('now_page');
-	$url_to = "admin.php?action=list&page=$now_page";
-	url_locate($url_to, '修改成功');		
+	$url_to = "admin_dangwei.php";
+	url_locate($url_to, '修改成功');
 }
 
 /*------------------------------------------------------ */
-//-- 删除管理员
+//-- 删除党支部
 /*------------------------------------------------------ */	
-function del_admin()
+/*function del_admin()
 {
 	global $db;
 	
@@ -187,18 +180,18 @@ function del_admin()
 	$db->query($sql);
 	
 	$aid  = $_SESSION['admin_id'];
-	$text = '删除管理员，删除管理员ID：' . $id;
+	$text = '删除党支部，删除党支部ID：' . $id;
 	operate_log($aid, 1, 3, $text);
 	
 	$now_page = irequest('now_page');
 	$url_to = "admin.php?action=list&page=$now_page";
 	href_locate($url_to);
-}
+}*/
 
 /*------------------------------------------------------ */
-//-- 批量删除管理员
+//-- 批量删除党支部
 /*------------------------------------------------------ */	
-function del_sel_admin()
+/*function del_sel_admin()
 {
 	global $db;
 	
@@ -213,11 +206,11 @@ function del_sel_admin()
 	$db->query($sql);
 	
 	$aid  = $_SESSION['admin_id'];
-	$text = '删除管理员，删除管理员ID：' . $id;
+	$text = '删除党支部，删除党支部ID：' . $id;
 	operate_log($aid, 1, 4, $text);
 	
 	$now_page = irequest('now_page');
 	$url_to = "admin.php?action=list&page=$now_page";
 	href_locate($url_to);	
-}
+}*/
 

@@ -9,11 +9,14 @@ set_include_path(dirname(dirname(__FILE__)));
 include_once("inc/init.php");
 
 $action = crequest("action");
-$action = $action == '' ? 'list' : $action;
+$action = $action == '' ? 'report' : $action;
 
 switch ($action)
 {
-    case "list":
+    case "report":
+        report();
+        break;
+    case "report_list":
         report_list();
         break;
     case "add_report":
@@ -37,6 +40,53 @@ switch ($action)
 
 }
 
+
+/*------------------------------------------------------
+`money` decimal(10,2) DEFAULT NULL COMMENT '党费收缴金额',
+  `num` int(11) DEFAULT NULL COMMENT '缴纳党费人数',
+  `use_funds` decimal(10,2) DEFAULT NULL COMMENT '使用党建经费',
+  `use_money` decimal(10,2) DEFAULT NULL COMMENT '使用党费',
+  `paid_dues` int(11) DEFAULT NULL COMMENT '上缴党费百分比',
+  `remaining_dues` int(11) DEFAULT NULL COMMENT '剩余党费百分比',
+  `honor_country` int(11) DEFAULT NULL COMMENT '国家级荣誉',
+  `honor_province` int(11) DEFAULT NULL COMMENT '省级荣誉',
+  `honor_city` int(11) DEFAULT NULL COMMENT '市级荣誉',
+  `file_country` int(11) DEFAULT NULL COMMENT '国家级稿件',
+  `file_province` int(11) DEFAULT NULL COMMENT '省级稿件',
+  `file_city` int(11) DEFAULT NULL COMMENT '市级稿件',
+----------------------------------------------------- */
+function report()
+{
+    global $db, $smarty;
+    $where = "where status = 1";
+    $starttime = crequest('starttime');
+    $endtime = crequest('endtime');
+    $smarty->assign('endtime', $endtime);
+    $smarty->assign('starttime', $starttime);
+
+    $time = date('Y-m',strtotime('-1 month'));
+
+    if (!empty($starttime))
+    {
+        $where .= " AND time >= '{$starttime}' ";
+    }
+    if (!empty($endtime))
+    {
+        $where .= " AND time <= '{$endtime}' ";
+    }
+    if(empty($endtime) && empty($starttime)){
+        $where.= " and time='{$time}'";
+    }
+
+    $sql = "SELECT sum(money) as money,sum(num) as num,sum(use_funds) as use_funds,sum(use_money) as use_money,sum(honor_country) as honor_country,sum(honor_province) as honor_province,sum(honor_city) as honor_city,sum(file_country) as file_country,sum(file_province) as file_province,sum(file_city) as file_city FROM report {$where}";
+    $row = $db->get_row($sql);
+
+    $smarty->assign('report', $row);
+
+    $smarty->assign('page_title', '各党支部'.$time."报表汇总");
+    $smarty->display('report/reportAll.htm');
+}
+
 /*------------------------------------------------------ */
 //-- 新闻列表
 /*------------------------------------------------------ */
@@ -45,27 +95,22 @@ function report_list()
     global $db, $smarty;
 
     //搜索条件
-    $adminid  = $_SESSION["admin_id"];
-    $con = "WHERE adminid = $adminid";
+    $con = "WHERE status = 1";
     //关键字
-    $keyword = crequest('keyword');
     $starttime = crequest('starttime');
     $endtime = crequest('endtime');
     $smarty->assign('endtime', $endtime);
     $smarty->assign('starttime', $starttime);
-    if (!empty($keyword))
-    {
-        $con .= " AND title like '{%$keyword%}' ";
-    }
+
     if (!empty($starttime))
     {
         $stime = strtotime($starttime);
-        $con .= " AND tine > '{$stime}' ";
+        $con .= " AND tine >= '{$stime}' ";
     }
     if (!empty($endtime))
     {
         $etime = strtotime($endtime);
-        $con .= " AND tine < '{$etime}' ";
+        $con .= " AND tine <= '{$etime}' ";
     }
     //排序字段
     $order 	 	 = 'ORDER BY id DESC';
@@ -77,6 +122,11 @@ function report_list()
     $start    	= ($now_page - 1) * $page_size;
     $sql 		= "SELECT * FROM report {$con} {$order} LIMIT {$start}, {$page_size}";
     $arr 		= $db->get_all($sql);
+    foreach($arr as $key=>$val){
+        $sql 		= "SELECT * FROM admin WHERE id = '{$val['adminid']}'";
+        $admin = $db->get_row($sql);
+        $arr[$key]['admin_name'] = $admin['userid'];
+    }
 
     $sql 		= "SELECT COUNT(id) FROM report {$con}";
     $total 		= $db->get_one($sql);
@@ -93,18 +143,18 @@ function report_list()
 /*------------------------------------------------------ */
 //-- 添加新闻
 /*------------------------------------------------------ */
-function add_report()
+/*function add_report()
 {
     global $smarty;
     $smarty->assign('action', 'do_add_report');
     $smarty->assign('page_title', '添加报表');
     $smarty->display('report/report.htm');
-}
+}*/
 
 /*------------------------------------------------------ */
 //-- 添加新闻
 /*------------------------------------------------------ */
-function do_add_report()
+/*function do_add_report()
 {
     global $db;
     $adminid  = $_SESSION["admin_id"];
@@ -125,7 +175,7 @@ function do_add_report()
 
     $url_to = "report.php?action=list";
     url_locate($url_to, '添加成功');
-}
+}*/
 
 /*------------------------------------------------------ */
 //-- 修改新闻
@@ -138,15 +188,20 @@ function mod_report()
     $sql = "SELECT * FROM report WHERE id = '{$id}'";
     $row = $db->get_row($sql);
 
+    $sql 		= "SELECT * FROM admin WHERE id = '{$row['adminid']}'";
+    $admin = $db->get_row($sql);
+    $row['admin_name'] = $admin['userid'];
+
     $smarty->assign('report', $row);
 
     $now_page = irequest('now_page');
     $smarty->assign('now_page', $now_page);
 
     $smarty->assign('action', 'do_mod_report');
-    $smarty->assign('page_title', '报表详情');
+    $smarty->assign('page_title', $row['admin_name']."党支部".$row['time']."报表详情");
     $smarty->display('report/report.htm');
 }
+
 
 /*------------------------------------------------------ */
 //-- 修改新闻
@@ -173,25 +228,19 @@ function mod_report()
 /*------------------------------------------------------ */
 //-- 删除新闻
 /*------------------------------------------------------ */
-function del_report()
+function updatel_report()
 {
     global $db;
 
     $id  = irequest('id');
-    /*$sql = "SELECT cover FROM report WHERE id = '{$id}'";
-    $row = $db->get_row($sql);
-    del_img($row['cover']);*/
 
-    /*$sql = "DELETE FROM report WHERE id = '{$id}'";
-    $db->query($sql);*/
-
-    $update_col = "is_delete = '1'";
+    $update_col = "status = '0'";
     $sql = "UPDATE report SET {$update_col} WHERE id = '{$id}'";
     $db->query($sql);
 
-    $aid  = $_SESSION['admin_id'];
-    $text = '删除新闻，删除新闻ID：' . $id;
-    operate_log($aid, 'report', 3, $text);
+    $aid  = $_SESSION['dangwei_id'];
+    $text = '撤回报表，撤回报表ID：' . $id;
+    dangwei_operate_log($aid, 'report', 3, $text);
 
     $now_page = irequest('now_page');
     $url_to = "report.php?action=list&page={$now_page}";
@@ -201,108 +250,41 @@ function del_report()
 /*------------------------------------------------------ */
 //-- 批量删除新闻
 /*------------------------------------------------------ */
-function del_sel_report()
-{
-    global $db;
-    $id = crequest('checkboxes');
+//function del_sel_report()
+//{
+//    global $db;
+//    $id = crequest('checkboxes');
+//
+//    if ($id == '')
+//        alert_back('请选中需要删除的选项');
+//
+//    /*$sql = "SELECT cover FROM report WHERE id IN ({$id})";
+//    $imgs_all = $db->get_all($sql);
+//    for ($i = 0; $i < count($imgs_all); $i++)
+//    {
+//        $cover = $imgs_all[$i]['cover'];
+//        del_img($cover);
+//    }*/
+//
+//    $sql = "SELECT * FROM report WHERE id IN ({$id})";
+//    $report_all = $db->get_all($sql);
+//    $update_col = "is_delete = '1'";
+//    foreach($report_all as $key=>$val){
+//        $sql = "UPDATE report SET {$update_col} WHERE id = '{$val['id']}'";
+//        $db->query($sql);
+//    }
+//
+//    /*	$sql = "DELETE FROM report WHERE id IN ({$id})";
+//        $db->query($sql);*/
+//
+//    $aid  = $_SESSION['admin_id'];
+//    $text = '批量删除新闻，批量删除新闻ID：' . $id;
+//    operate_log($aid, 'report', 4, $text);
+//
+//    $now_page = irequest('now_page');
+//    $url_to = "report.php?action=list&page={$now_page}";
+//    href_locate($url_to);
+//}
 
-    if ($id == '')
-        alert_back('请选中需要删除的选项');
 
-    /*$sql = "SELECT cover FROM report WHERE id IN ({$id})";
-    $imgs_all = $db->get_all($sql);
-    for ($i = 0; $i < count($imgs_all); $i++)
-    {
-        $cover = $imgs_all[$i]['cover'];
-        del_img($cover);
-    }*/
 
-    $sql = "SELECT * FROM report WHERE id IN ({$id})";
-    $report_all = $db->get_all($sql);
-    $update_col = "is_delete = '1'";
-    foreach($report_all as $key=>$val){
-        $sql = "UPDATE report SET {$update_col} WHERE id = '{$val['id']}'";
-        $db->query($sql);
-    }
-
-    /*	$sql = "DELETE FROM report WHERE id IN ({$id})";
-        $db->query($sql);*/
-
-    $aid  = $_SESSION['admin_id'];
-    $text = '批量删除新闻，批量删除新闻ID：' . $id;
-    operate_log($aid, 'report', 4, $text);
-
-    $now_page = irequest('now_page');
-    $url_to = "report.php?action=list&page={$now_page}";
-    href_locate($url_to);
-}
-
-/*------------------------------------------------------ */
-//-- 删除新闻图片
-/*------------------------------------------------------ */
-function del_one_img()
-{
-    $img_name = crequest('img_name');
-    //del_img($img_name);
-
-    $id = irequest('id');
-    $now_page = irequest('now_page');
-
-    global $db;
-    $replace_img = $img_name . '|';
-    $sql = "UPDATE report SET imgs = replace(imgs, '{$replace_img}', '') WHERE id = '{$id}'";
-    $db->query($sql);
-
-    $url_to = "report.php?action=mod_report&id={$id}&now_page=$now_page";
-    href_locate($url_to, '删除成功');
-}
-
-/*------------------------------------------------------ */
-//-- 新闻分类
-/*------------------------------------------------------ */
-function get_report_category()
-{
-    global $db;
-    $adminid  = $_SESSION["admin_id"];
-
-    $sql = "SELECT catid, catname FROM report_category WHERE pid = 0 and adminid='{$adminid}' ORDER BY listorder";
-    $res = $db->get_all($sql);
-    $num = count($res);
-
-    for ($i = 0; $i < $num; $i++)
-    {
-        $catid  = $res[$i]['catid'];
-        $sql = "SELECT catid, catname FROM report_category WHERE pid = {$catid} and adminid='{$adminid}' ORDER BY listorder";
-        $res[$i]['sub'] = $db->get_all($sql);
-    }
-
-    return $res;
-}
-
-/*------------------------------------------------------ */
-//-- 检查分类是否存在子分类
-/*------------------------------------------------------ */
-function checkChild()
-{
-    global $db;
-    $adminid  = $_SESSION["admin_id"];
-    $catid  = irequest('catid');
-    $sql = "SELECT catid, catname FROM report_category WHERE pid = {$catid} and adminid='{$adminid}' ORDER BY listorder";
-    $res = $db->get_all($sql);
-    if(is_array($res) && $res){
-        echo json_encode(1);
-    }else{
-        echo json_encode(0);
-    }
-    exit;
-}
-
-function get_vote()
-{
-    global $db;
-    $adminid  = $_SESSION["admin_id"];
-    $sql = "SELECT id, title FROM vote WHERE adminid='{$adminid}' ORDER BY id DESC ";
-    $vote = $db->get_all($sql);
-
-    return $vote;
-}
