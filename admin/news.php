@@ -52,7 +52,13 @@ function get_con()
 	{
 		$con .=" AND a.catid = '{$catid}' ";
 	}
-	
+
+	$lables = irequest('lables');
+	$smarty->assign('lable', $lables);
+	if (!empty($lables))
+	{
+		$con .=" AND a.lables in ({$lables}) ";
+	}
 	//关键字
 	$keyword = crequest('keyword');
 	$smarty->assign('keyword', $keyword);
@@ -100,7 +106,7 @@ function news_list()
 	
 	//新闻分类
 	$smarty->assign('news_category', get_news_category());
-	
+	$smarty->assign('lables',  get_lables());
     $smarty->assign('page_title', '新闻列表');
 	$smarty->display('news/news_list.htm');	
 }
@@ -181,7 +187,7 @@ function mod_news()
 	$now_page = irequest('now_page');
 	$smarty->assign('now_page', $now_page);
 
-	$lables = get_labes();
+	$lables = get_lables();
 	foreach($lables as $key=>$val){
 		if(strstr("{$row['lables']}","{$val['id']}")){
 			$lables[$key]['flg'] = 1;
@@ -359,7 +365,8 @@ function get_vote()
 {
 	global $db;
 	$adminid  = $_SESSION["admin_id"];
-	$sql = "SELECT id, title FROM vote WHERE adminid='{$adminid}' ORDER BY id DESC ";
+	$time = time();
+	$sql = "SELECT id, title FROM vote WHERE adminid='{$adminid}' and end_time > '{$time}' and is_delete = 0  ORDER BY id DESC ";
 	$vote = $db->get_all($sql);
 
 	return $vote;

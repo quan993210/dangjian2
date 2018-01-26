@@ -44,13 +44,27 @@
 <div class="form-div">
   <form action="member.php" name="searchForm" onsubmit="">
     <img src="{$admin_temp_path}/images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
-    <select name="search_cat" >
-      <option value="0" {if $search_cat eq 0}selected{/if}>选择查询条件</option>
-     <!-- <option value="1" {if $search_cat eq 1}selected{/if}>昵称</option>-->
-      <option value="2" {if $search_cat eq 2}selected{/if}>姓名</option>
-		<option value="3" {if $search_cat eq 3}selected{/if}>电话</option>
-    </select>
     关键字 <input type="text" name="keyword" id="keyword" value="{$keyword}"/>
+	  <select name="identity">
+		  {foreach item=identity key=key from=$info.identity}
+		  <option value="{$key}" {if $identitys == $key}selected {/if}>{$identity}</option>
+		  {/foreach}
+	  </select>
+	  <select name="position">
+		  {foreach item=position key=key from=$info.position}
+		  <option value="{$key}" {if $positions == $key}selected {/if}>{$position}</option>
+		  {/foreach}
+	  </select>
+	  <select name="grade">
+		  {foreach item=grade key=key from=$info.grade}
+		  <option value="{$key}" {if $grades == $key}selected {/if}>{$grade}</option>
+		  {/foreach}
+	  </select>
+	  <select name="rank_title">
+		  {foreach item=rank_title key=key from=$info.rank_title}
+		  <option value="{$key}" {if $rank_titles == $key}selected {/if}>{$rank_title}</option>
+		  {/foreach}
+	  </select>
     <input type="submit" value="搜索" class="button" />
   </form>
 </div>

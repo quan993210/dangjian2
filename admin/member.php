@@ -38,24 +38,6 @@ switch ($action)
 		break;
 }
 
-function get_con()
-{
-	global $smarty;
-
-	//文章分类
-
-	$con= "WHERE is_delete = '0'";
-	//关键字
-	$keyword = crequest('keyword');
-	$smarty->assign('keyword', $keyword);
-	if (!empty($keyword))
-	{
-		$con = " AND (name like '%{$keyword}%' or brief like '%{$keyword}%' or captain like '%{$keyword}%')";
-	}
-
-
-	return $con;
-}
 
 
 function member_list()
@@ -63,29 +45,41 @@ function member_list()
 	global $db, $smarty;
 	$adminid  = $_SESSION["admin_id"];
 	//搜索条件
-	$search_cat = irequest('search_cat');
-	$keyword 	= crequest('keyword');
 
-	switch ($search_cat)
+	$con= "WHERE is_delete = '0'";
+	$keyword = crequest('keyword');
+	$smarty->assign('keyword', $keyword);
+	if (!empty($keyword))
 	{
-		case 1:
-			$con = "WHERE nickname LIKE '%{$keyword}%' and is_delete=0 and adminid = $adminid";
-			break;
-		case 2:
-			$con = "WHERE name LIKE '%{$keyword}%' and is_delete=0 and adminid = $adminid";
-			break;
-		case 3:
-			$con = "WHERE mobile LIKE '%{$keyword}%' and is_delete=0 and adminid = $adminid";
-			break;
-		default:
-			$con = "WHERE is_delete=0 and adminid = $adminid";
-			$search_cat = 0;
-			$keyword = '';
-			break;
+		$con.= " AND (name like '%{$keyword}%' or nickname like '%{$keyword}%' or mobile like '%{$keyword}%')";
+	}
+	$identity = crequest('identity');
+	$smarty->assign('identitys', $identity);
+	if (!empty($identity))
+	{
+		$con.= " AND identity = '{$identity}'";
 	}
 
-	$smarty->assign('search_cat' ,   $search_cat);
-	$smarty->assign('keyword'    ,   $keyword);
+	$position = crequest('position');
+	$smarty->assign('positions', $position);
+	if (!empty($position))
+	{
+		$con.= " AND position = '{$position}'";
+	}
+
+	$grade = crequest('grade');
+	$smarty->assign('grades', $grade);
+	if (!empty($grade))
+	{
+		$con.= " AND grade = '{$grade}'";
+	}
+	$rank_title = crequest('rank_title');
+	$smarty->assign('rank_titles', $rank_title);
+	if (!empty($rank_title))
+	{
+		$con.= " AND rank_title = '{$rank_title}'";
+	}
+
 
 	$order 	 	= 'ORDER BY userid DESC';
 
@@ -104,7 +98,7 @@ function member_list()
 	$smarty->assign('member_list',$arr);
 	$smarty->assign('pageshow',$page->show(6));
 	$smarty->assign('now_page',$page->now_page);
-
+	$smarty->assign('info', get_member_info());
 	$smarty->assign('page_title', '用户列表');
 	$smarty->display('member/member_list.htm');
 }
@@ -245,6 +239,8 @@ function del_sel_member()
 function get_member_info(){
 	$info['identity'] = ['选择身份','正式党员','预备党员','积极分子','群众','发展对象'];
 	$info['position'] = ['选择职位','固定党员','一般党员'];
+	$info['grade'] = ['选择等级','无','初级','中级','高级级','正高级'];
+	$info['rank_title'] = ['选择职称','无','工程','经济','会记','政工'];
 	return $info;
 }
 

@@ -65,6 +65,21 @@
         </td>
     </tr>
     <tr>
+        <td class="label">职称：</td>
+        <td>
+            <select name="info[grade]">
+                {foreach item=grade key=key from=$info.grade}
+                <option value="{$key}" {if $member.grade == $key}selected {/if}>{$grade}</option>
+                {/foreach}
+            </select>
+            <select name="info[title]">
+                {foreach item=rank_title key=key from=$info.rank_title}
+                <option value="{$key}" {if $member.rank_title == $key}selected {/if}>{$rank_title}</option>
+                {/foreach}
+            </select>
+        </td>
+    </tr>
+    <tr>
         <td class="label">是否为专职党务干事：</td>
         <td>
             <input name="info[is_party_affairs]" type="radio" value="0" checked />否

@@ -78,7 +78,7 @@ function sign(){
     $metting = $db->get_row($sql);
 
     if($metting['flg'] == 1){
-        if($metting['identity'] != $member['identity'] || $metting['position'] != $member['position'] || $metting['is_party_affairs'] != $member['is_party_affairs'] || $metting['is_discipline'] != $member['is_discipline'] ||$metting['is_prepare'] != $member['is_prepare'] ||$metting['is_retire'] != $member['is_retire'] ){
+        if($metting['grade'] != $member['grade'] ||$metting['rank_title'] != $member['rank_title'] || $metting['identity'] != $member['identity'] || $metting['position'] != $member['position'] || $metting['is_party_affairs'] != $member['is_party_affairs'] || $metting['is_discipline'] != $member['is_discipline'] ||$metting['is_prepare'] != $member['is_prepare'] ||$metting['is_retire'] != $member['is_retire'] ){
             showapierror('不是会议指定人群，签到失败');
         }
     }

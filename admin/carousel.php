@@ -19,6 +19,9 @@ switch ($action)
     case "list":
         carousel();
         break;
+    case "del_image":
+        del_image();
+        break;
 }
 
 
@@ -36,8 +39,8 @@ function carousel()
         $image1 = crequest('image1');
         $image2 = crequest('image2');
         $image3 = crequest('image3');
-        $update_col = "image1 = '{$image1}', image2 = '{$image2}', image3 = '{$image3}', adminid = '{$adminid}'";
-        $sql = "UPDATE carousel SET {$update_col} WHERE id='{$id}'";
+        $update_col = "image1 = '{$image1}', image2 = '{$image2}', image3 = '{$image3}', ";
+        $sql = "UPDATE carousel SET {$update_col} WHERE adminid = '{$adminid}'";
         $db->query($sql);
     }
     //列表信息
@@ -47,6 +50,20 @@ function carousel()
 
     $smarty->assign('page_title', '用户列表');
     $smarty->display('carousel/image.htm');
+}
+
+
+function del_image()
+{
+    global $db;
+    $adminid  = $_SESSION["admin_id"];
+    $id =$_GET['img'];
+    $update_col = "image$id = ''";
+    $sql = "UPDATE carousel SET {$update_col} WHERE adminid='{$adminid}'";
+    $db->query($sql);
+
+    $url_to = "carousel.php";
+    url_locate($url_to, '已清空');
 }
 
 ?>

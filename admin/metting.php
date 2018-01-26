@@ -384,6 +384,8 @@ function https_request($url, $data = null)
 function get_member_info(){
     $info['identity'] = ['选择身份','正式党员','预备党员','积极分子','群众','发展对象'];
     $info['position'] = ['选择职位','固定党员','一般党员'];
+    $info['grade'] = ['选择等级','无','初级','中级','高级级','正高级'];
+    $info['rank_title'] = ['选择职称','无','工程','经济','会记','政工'];
     return $info;
 }
 

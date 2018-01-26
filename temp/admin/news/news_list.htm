@@ -74,7 +74,13 @@
     </select> 
     
     关键字 <input type="text" name="keyword" id="keyword" value="{$keyword}"/>
-    <input type="submit" value="搜索" class="button" />
+	  <select name="lables" id="lables">
+		  <option value="0">选择文章标签</option>
+		  {section name=loop loop=$lables}
+		  <option value="{$lables[loop].id}" {if $lable eq $lables[loop].id}selected{/if}>{$lables[loop].name}</option>
+		  {/section}
+	  </select>
+	  <input type="submit" value="搜索" class="button" />
   </form>
 </div>
 <form method="post" action="news.php?action=del_sel_news" name="listForm" onsubmit="return check()">

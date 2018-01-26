@@ -41,6 +41,18 @@
       <td class="label">密码：</td>
 	  <td><input type="password" name="info[password]" value=""> (留空表示不修改)</td>
     </tr>
+	<tr>
+		<td class="label">公司名称：</td>
+		<td><input type="text" name="info[company]" readonly="readonly" value="{$admin.company}"></td>
+	</tr>
+	<tr>
+		<td class="label">联系电话：</td>
+		<td><input type="text" name="info[mobile]" readonly="readonly" value="{$admin.mobile}"></td>
+	</tr>
+	<tr>
+		<td class="label">公司地址：</td>
+		<td><input type="text" name="info[address]" readonly="readonly" value="{$admin.address}"></td>
+	</tr>
     <tr>
       <td colspan="2" align="center">
       	<input type="hidden" value="{$action}" name="action" />
