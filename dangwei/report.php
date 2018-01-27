@@ -37,6 +37,12 @@ switch ($action)
     case "del_sel_report":
         del_sel_report();
         break;
+    case "export":
+        export();
+        break;
+    case "detail_export":
+        detail_export();
+        break;
 
 }
 
@@ -61,21 +67,27 @@ function report()
     $where = "where status = 1";
     $starttime = crequest('starttime');
     $endtime = crequest('endtime');
-    $smarty->assign('endtime', $endtime);
-    $smarty->assign('starttime', $starttime);
 
     $time = date('Y-m',strtotime('-1 month'));
+    $text = "";
 
     if (!empty($starttime))
     {
+        $smarty->assign('starttime', $starttime);
         $where .= " AND time >= '{$starttime}' ";
+        $text.= "$starttime";
     }
     if (!empty($endtime))
     {
+        $smarty->assign('endtime', $endtime);
         $where .= " AND time <= '{$endtime}' ";
+        $text.= "/$endtime";
     }
     if(empty($endtime) && empty($starttime)){
         $where.= " and time='{$time}'";
+        $smarty->assign('endtime', $time);
+        $smarty->assign('starttime', $time);
+        $text.= "/$time";
     }
 
     $sql = "SELECT sum(money) as money,sum(num) as num,sum(use_funds) as use_funds,sum(use_money) as use_money,sum(honor_country) as honor_country,sum(honor_province) as honor_province,sum(honor_city) as honor_city,sum(file_country) as file_country,sum(file_province) as file_province,sum(file_city) as file_city FROM report {$where}";
@@ -83,7 +95,7 @@ function report()
 
     $smarty->assign('report', $row);
 
-    $smarty->assign('page_title', '各党支部'.$time."报表汇总");
+    $smarty->assign('page_title', '各党支部'.$text."报表汇总");
     $smarty->display('report/reportAll.htm');
 }
 
@@ -99,18 +111,20 @@ function report_list()
     //关键字
     $starttime = crequest('starttime');
     $endtime = crequest('endtime');
+    $adminid = crequest('adminid');
     $smarty->assign('endtime', $endtime);
     $smarty->assign('starttime', $starttime);
-
+    if (!empty($adminid))
+    {
+        $con .= " AND adminid = '{$adminid}' ";
+    }
     if (!empty($starttime))
     {
-        $stime = strtotime($starttime);
-        $con .= " AND tine >= '{$stime}' ";
+        $con .= " AND time >= '{$starttime}' ";
     }
     if (!empty($endtime))
     {
-        $etime = strtotime($endtime);
-        $con .= " AND tine <= '{$etime}' ";
+        $con .= " AND time <= '{$endtime}' ";
     }
     //排序字段
     $order 	 	 = 'ORDER BY id DESC';
@@ -243,7 +257,7 @@ function updatel_report()
     dangwei_operate_log($aid, 'report', 3, $text);
 
     $now_page = irequest('now_page');
-    $url_to = "report.php?action=list&page={$now_page}";
+    $url_to = "report.php?action=report_list&page={$now_page}";
     href_locate($url_to);
 }
 
@@ -285,6 +299,156 @@ function updatel_report()
 //    $url_to = "report.php?action=list&page={$now_page}";
 //    href_locate($url_to);
 //}
+
+
+//导出
+function export(){
+    //$cashflow_db = pc_base::load_model('cashflow_model');
+    require_once '/inc/plugin/PHPExcel/PHPExcel.php';
+    require_once '/inc/plugin/PHPExcel/PHPExcel/IOFactory.php';
+    require_once '/inc/plugin/PHPExcel/PHPExcel/Reader/Excel5.php';
+    global $db, $smarty;
+    $where = "where status = 1";
+    $starttime = crequest('starttime');
+    $endtime = crequest('endtime');
+
+    $time = date('Y-m',strtotime('-1 month'));
+    $text = "";
+    if (!empty($starttime))
+    {
+        $where .= " AND time >= '{$starttime}' ";
+        $text.= "$starttime";
+    }
+    if (!empty($endtime))
+    {
+        $where .= " AND time <= '{$endtime}' ";
+        $text.= "/$endtime";
+    }
+    if(empty($endtime) && empty($starttime)){
+        $where.= " and time='{$time}'";
+        $text.= "$time";
+    }
+
+    $sql = "SELECT sum(money) as money,sum(num) as num,sum(use_funds) as use_funds,sum(use_money) as use_money,sum(honor_country) as honor_country,sum(honor_province) as honor_province,sum(honor_city) as honor_city,sum(file_country) as file_country,sum(file_province) as file_province,sum(file_city) as file_city FROM report {$where}";
+    $row = $db->get_row($sql);
+    $objPHPExcel = new PHPExcel();
+    /*以下是一些设置 ，什么作者  标题啊之类的*/
+    $objPHPExcel->getProperties()->setCreator("转弯的阳光")
+        ->setLastModifiedBy("转弯的阳光")
+        ->setTitle("数据EXCEL导出")
+        ->setSubject("数据EXCEL导出")
+        ->setDescription("备份数据")
+        ->setKeywords("excel")
+        ->setCategory("result file");
+    /*以下就是对处理Excel里的数据， 横着取数据，主要是这一步，其他基本都不要改*/
+    $objPHPExcel->setActiveSheetIndex(0)
+        //Excel的第A列，uid是你查出数组的键值，下面以此类推
+        ->setCellValue('A1', '开始时间')
+        ->setCellValue('B1', '结束时间')
+        ->setCellValue('C1', '党费缴纳金额')
+        ->setCellValue('D1', '缴纳党费人数')
+        ->setCellValue('E1', '使用党建经费')
+        ->setCellValue('F1', '使用党费')
+        ->setCellValue('G1', '获得荣誉（国家级）')
+        ->setCellValue('H1', '获得荣誉（省部级）')
+        ->setCellValue('I1', '获得荣誉（市厅级）')
+        ->setCellValue('J1', '稿件发布（国家级）')
+        ->setCellValue('K1', '稿件发布（省部级）')
+        ->setCellValue('L1', '稿件发布（市厅级）');
+
+    $num = 2;
+    $objPHPExcel->setActiveSheetIndex(0)
+        //Excel的第A列，uid是你查出数组的键值，下面以此类推
+        //->setCellValue('A'.$num, $row['orderid'])
+        ->setCellValueExplicit('A'.$num, $starttime,PHPExcel_Cell_DataType::TYPE_STRING)
+        ->setCellValue('B'.$num, $endtime)
+        ->setCellValue('C'.$num, $row['money'])
+        ->setCellValue('D'.$num, $row['num'])
+        ->setCellValue('E'.$num, $row['use_funds'])
+        ->setCellValue('F'.$num, $row['use_money'])
+        ->setCellValue('G'.$num, $row['honor_country'])
+        ->setCellValue('H'.$num, $row['honor_province'])
+        ->setCellValue('I'.$num, $row['honor_city'])
+        ->setCellValue('J'.$num, $row['file_country'])
+        ->setCellValue('K'.$num, $row['file_province'])
+        ->setCellValue('L'.$num, $row['file_city']);
+
+    $name='各党支部'.$text.'报表汇总_'.date('Y-m-d H:i:s');
+    $objPHPExcel->getActiveSheet()->setTitle('User');
+    $objPHPExcel->setActiveSheetIndex(0);
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="'.$name.'.xls"');
+    header('Cache-Control: max-age=0');
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    $objWriter->save('php://output');
+    exit;
+}
+
+function detail_export(){
+    //$cashflow_db = pc_base::load_model('cashflow_model');
+    require_once '/inc/plugin/PHPExcel/PHPExcel.php';
+    require_once '/inc/plugin/PHPExcel/PHPExcel/IOFactory.php';
+    require_once '/inc/plugin/PHPExcel/PHPExcel/Reader/Excel5.php';
+    global $db, $smarty;
+    $id  = irequest('id');
+    $sql = "SELECT * FROM report WHERE id = '{$id}'";
+    $row = $db->get_row($sql);
+
+    $sql 		= "SELECT * FROM admin WHERE id = '{$row['adminid']}'";
+    $admin = $db->get_row($sql);
+    $row['admin_name'] = $admin['userid'];
+    $objPHPExcel = new PHPExcel();
+    /*以下是一些设置 ，什么作者  标题啊之类的*/
+    $objPHPExcel->getProperties()->setCreator("转弯的阳光")
+        ->setLastModifiedBy("转弯的阳光")
+        ->setTitle("数据EXCEL导出")
+        ->setSubject("数据EXCEL导出")
+        ->setDescription("备份数据")
+        ->setKeywords("excel")
+        ->setCategory("result file");
+    /*以下就是对处理Excel里的数据， 横着取数据，主要是这一步，其他基本都不要改*/
+    $objPHPExcel->setActiveSheetIndex(0)
+        //Excel的第A列，uid是你查出数组的键值，下面以此类推
+        ->setCellValue('A1', '党支部')
+        ->setCellValue('B1', '提交时间')
+        ->setCellValue('C1', '党费缴纳金额')
+        ->setCellValue('D1', '缴纳党费人数')
+        ->setCellValue('E1', '使用党建经费')
+        ->setCellValue('F1', '使用党费')
+        ->setCellValue('G1', '获得荣誉（国家级）')
+        ->setCellValue('H1', '获得荣誉（省部级）')
+        ->setCellValue('I1', '获得荣誉（市厅级）')
+        ->setCellValue('J1', '稿件发布（国家级）')
+        ->setCellValue('K1', '稿件发布（省部级）')
+        ->setCellValue('L1', '稿件发布（市厅级）');
+
+    $num = 2;
+    $objPHPExcel->setActiveSheetIndex(0)
+        //Excel的第A列，uid是你查出数组的键值，下面以此类推
+        //->setCellValue('A'.$num, $row['orderid'])
+        ->setCellValueExplicit('A'.$num, $row['admin_name'],PHPExcel_Cell_DataType::TYPE_STRING)
+        ->setCellValue('B'.$num, $row['time'])
+        ->setCellValue('C'.$num, $row['money'])
+        ->setCellValue('D'.$num, $row['num'])
+        ->setCellValue('E'.$num, $row['use_funds'])
+        ->setCellValue('F'.$num, $row['use_money'])
+        ->setCellValue('G'.$num, $row['honor_country'])
+        ->setCellValue('H'.$num, $row['honor_province'])
+        ->setCellValue('I'.$num, $row['honor_city'])
+        ->setCellValue('J'.$num, $row['file_country'])
+        ->setCellValue('K'.$num, $row['file_province'])
+        ->setCellValue('L'.$num, $row['file_city']);
+
+    $name="党支部".$row['time']."报表详情_".date('Y-m-d H:i:s');
+    $objPHPExcel->getActiveSheet()->setTitle('User');
+    $objPHPExcel->setActiveSheetIndex(0);
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="'.$name.'.xls"');
+    header('Cache-Control: max-age=0');
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    $objWriter->save('php://output');
+    exit;
+}
 
 
 

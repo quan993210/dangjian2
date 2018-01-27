@@ -28,6 +28,9 @@ switch ($action)
     case "do_mod_report":
         do_mod_report();
         break;
+    case "detail_report":
+        detail_report();
+        break;
     case "del_report":
         del_report();
         break;
@@ -107,17 +110,20 @@ function do_add_report()
     global $db;
     $adminid  = $_SESSION["admin_id"];
     $info = $_POST['info'];
-    $info['add_time']	= time();
-    $info['add_time_format']	= now_time();
-    $info['adminid'] = $adminid;
+    $attachment = com_upload_file();
+    if($attachment){
+        $info['attachment'] = $attachment;
+    }
+
     $sql = "SELECT * FROM report WHERE adminid = '{$adminid}' and time='{$info['time']}'";
     $report = $db->get_row($sql);
-    if($report){
+    $id = irequest('id');
+    if($report && $report['id'] != $id){
         alert_back('同时间段报表只能提交一次');
     }
-    $reportid = $db->insert('report',$info);
+    $db->update('report',$info,"id='{$id}'");
     $aid  = $_SESSION['admin_id'];
-    $text = '添加报表，添加报表ID：' . $reportid;
+    $text = '修改报表，修改报表ID：' . $id;
     operate_log($aid, 'report', 1, $text);
 
     $url_to = "report.php?action=list";
@@ -127,6 +133,26 @@ function do_add_report()
 /*------------------------------------------------------ */
 //-- 修改新闻
 /*------------------------------------------------------ */
+function detail_report()
+{
+    global $db, $smarty;
+
+    $id  = irequest('id');
+    $sql = "SELECT * FROM report WHERE id = '{$id}'";
+    $row = $db->get_row($sql);
+
+    $smarty->assign('report', $row);
+
+    $now_page = irequest('now_page');
+    $smarty->assign('now_page', $now_page);
+
+    $smarty->assign('action', 'mod_report');
+    $smarty->assign('page_title', '报表详情');
+    $smarty->display('report/report.htm');
+}
+
+
+
 function mod_report()
 {
     global $db, $smarty;
@@ -148,7 +174,7 @@ function mod_report()
 /*------------------------------------------------------ */
 //-- 修改新闻
 /*------------------------------------------------------ */
-/*function do_mod_report()
+function do_mod_report()
 {
     global $db;
     $info = $_POST['info'];
@@ -165,7 +191,7 @@ function mod_report()
     $now_page = irequest('now_page');
     $url_to = "report.php?action=list&page={$now_page}";
     url_locate($url_to, '修改成功');
-}*/
+}
 
 /*------------------------------------------------------ */
 //-- 删除新闻
@@ -233,4 +259,152 @@ function del_sel_report()
     $url_to = "report.php?action=list&page={$now_page}";
     href_locate($url_to);
 }
+
+
+
+//上传文件
+function com_upload_file()
+{
+   // $imgext = array('.jpg','.gif','.png','.jpeg');
+    $fileext = array('.docx','pdf','.doc','.xls','.xlsx');
+    $upload_name = "attachment";
+    $targetDir   = $_SERVER['DOCUMENT_ROOT'] . '/upload/report/' . date('ym') . '/';
+
+    $cleanupTargetDir = true; // Remove old files
+    $maxFileAge = 5 * 3600; // Temp file age in seconds
+
+    if (!file_exists($targetDir)) {
+        mkdir($targetDir,0777,true);
+    }
+
+    $pos = strrpos($_FILES[$upload_name]["name"], '.');
+    if ($pos !== false)
+    {
+        $file_type = substr($_FILES[$upload_name]["name"], $pos);
+        if(!in_array($file_type,$fileext)) {
+            
+            alert_back('Failed to File type ');
+        }
+        //上传图片过大时对图片进行等比压缩
+       /* if(in_array($file_type,$imgext)) {
+            if($_FILES[$upload_name]['size']>(800*800)){
+                compressed_image($_FILES[$upload_name]['tmp_name'],$_FILES[$upload_name]['tmp_name']);
+            }
+        }*/
+
+    }else{
+        return "";
+    }
+
+    $fileName = date('YmdHis') . rand(1000, 9999) . $file_type;
+    $filePath = $targetDir . $fileName;
+
+    // Chunking might be enabled
+    $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+    $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
+
+    // Remove old temp files
+    if ($cleanupTargetDir) {
+        if (!is_dir($targetDir) || !$dir = opendir($targetDir)) {
+            alert_back('Failed to open temp directory.');
+            //die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
+        }
+
+        while (($file = readdir($dir)) !== false) {
+            $tmpfilePath = $targetDir . $file;
+
+            // If temp file is current file proceed to the next
+            if ($tmpfilePath == "{$filePath}.part") {
+                continue;
+            }
+
+            // Remove temp file if it is older than the max age and is not the current file
+            if (preg_match('/\.part$/', $file) && (filemtime($tmpfilePath) < time() - $maxFileAge)) {
+                @unlink($tmpfilePath);
+            }
+        }
+        closedir($dir);
+    }
+
+    // Open temp file
+    if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
+        alert_back('Failed to open output stream');
+        //die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+    }
+
+    if (!empty($_FILES)) {
+        if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES[$upload_name]["tmp_name"])) {
+            alert_back('Failed to move uploaded file');
+            //die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+        }
+
+        // Read binary input stream and append it to temp file
+        if (!$in = @fopen($_FILES[$upload_name]["tmp_name"], "rb")) {
+            alert_back('Failed to open input stream');
+            //die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+        }
+    } else {
+        if (!$in = @fopen("php://input", "rb")) {
+            alert_back('Failed to open input stream');
+            //die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+        }
+    }
+
+    while ($buff = fread($in, 4096)) {
+        fwrite($out, $buff);
+    }
+
+    @fclose($out);
+    @fclose($in);
+
+    // Check if file has been uploaded
+    if (!$chunks || $chunk == $chunks - 1) {
+        // Strip the temp .part suffix off
+        rename("{$filePath}.part", $filePath);
+    }
+
+
+    $file_path = '/upload/report/' . date('ym') . '/' . $fileName;
+    return $file_path;
+}
+
+function compressed_image($imgsrc,$imgdst){
+    list($width,$height,$type)=getimagesize($imgsrc);
+    if($width*$height > 800*800){
+        if($width > $height && $width >800){
+            $new_width = 800;
+            $new_height = round($height/(round($width/800)));
+        }
+        if($height > $width  && $height >800){
+            $new_height = 800;
+            $new_width = round($width/(round($height/800)));
+        }
+    }
+
+    switch($type){
+        case 1:
+            break;
+        case 2:
+            $image_wp=imagecreatetruecolor($new_width, $new_height);
+            $image = imagecreatefromjpeg($imgsrc);
+            imagecopyresampled($image_wp, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+            //75代表的是质量、压缩图片容量大小
+            imagejpeg($image_wp, $imgdst,75);
+            imagedestroy($image_wp);
+            imagedestroy($image);
+            break;
+        case 3:
+            $image_wp=imagecreatetruecolor($new_width, $new_height);
+            $image = imagecreatefrompng($imgsrc);
+            imagecopyresampled($image_wp, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+            //75代表的是质量、压缩图片容量大小
+            imagejpeg($image_wp, $imgdst,75);
+            imagedestroy($image_wp);
+            imagedestroy($image);
+            break;
+    }
+}
+
+
+
 

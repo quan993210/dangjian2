@@ -29,7 +29,7 @@ function select_time()
 <h1>
 <span class="action-span"><a href="javascript:history.back();">返回</a></span>
 <span class="action-span1"><a href="">{$sys_name} 管理中心</a>  - {$page_title} </span>
-	<span class="action-span"><a href="report.php?action=export">导出</a></span>
+	<span class="action-span"><a href="report.php?action=detail_export&id={$report.id}">导出</a></span>
 <div style="clear:both"></div>
 </h1>
 <div id="tabbody-div">
@@ -92,6 +92,13 @@ function select_time()
 		<td class="label">稿件发布（市厅级）<em style="color: red">*</em>：</td>
 		<td colspan="6"><input type="text" name="info[file_city]" required="required" value="{$report.file_city}" size="32" />篇</td>
 	</tr>
+	{if $report.attachment}
+	<tr>
+
+		<td class="label"><a href="{$url_path}{$report.attachment}">附件下载</a></td>
+		<td></td>
+	</tr>
+	{/if}
 
 
     <!--<tr>

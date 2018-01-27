@@ -47,14 +47,12 @@
 </h1>
 <body>
 <div class="form-div">
-  <form action="" name="searchForm" onsubmit="">
+  <form action="report.php?action=report_list" name="searchForm" onsubmit="">
     <img src="{$admin_temp_path}/images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
-    关键字 <input type="text" name="keyword" placeholder="请输入标题" id="keyword" value="{$keyword}"/>
-	  <input type="text" onclick="return select_time()" name="starttime" placeholder="请选择开始时间" value="{$start_time}" size="15" />-
-	  <input type="text" onclick="return select_time()" name="endtime" placeholder="请选择结束时间" value="{$end_time}" size="15" />
+	  <input type="text" onclick="return select_time()" name="starttime" placeholder="请选择开始时间" value="{$starttime}" size="15" />-
+	  <input type="text" onclick="return select_time()" name="endtime" placeholder="请选择结束时间" value="{$endtime}" size="15" />
 
 	  <input type="submit" value="搜索" class="button" />
-	  <a href="report.php?action=export" style="height: 19px;background: #DDDDDD; border: 1px #DDDDDD solid;padding: 2px 8px 0px;display: inline-block;">导出</a>
   </form>
 </div>
 <form method="post" action="report.php?action=del_sel_report" name="listForm" onsubmit="return check()">
@@ -76,7 +74,7 @@
 			  {$report_list[loop].time|date_format:"%Y-%m"}</td>
 		  <td>
           	<a href="report.php?action=mod_report&id={$report_list[loop].id}&now_page={$now_page}">详情</a> |
-			  <a href="report.php?action=mod_do_report&id={$report_list[loop].id}&now_page={$now_page}">撤回</a>
+			  <a href="report.php?action=updatel_reportt&id={$report_list[loop].id}&now_page={$now_page}">撤回</a>
 
 		  </td>
 		</tr>  

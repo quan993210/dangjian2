@@ -64,7 +64,7 @@
           <td>{$admin_list[loop].add_time}</td>
 		  <td>
           	<a href="admin_dangwei.php?action=mod_admin&id={$admin_list[loop].id}&now_page={$now_page}">修改</a> |
-			  <a href="#">查看报表</a>
+			  <a href="report.php?action=report_list&adminid={$admin_list[loop].id}">查看报表</a>
 		  </td>
 		</tr>  
 	{/section}

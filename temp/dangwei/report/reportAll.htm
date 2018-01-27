@@ -37,7 +37,7 @@ function select_time()
 			<input type="text" onclick="return select_time()" name="starttime" placeholder="请选择开始时间" value="{$starttime}" size="15" />-
 			<input type="text" onclick="return select_time()" name="endtime" placeholder="请选择结束时间" value="{$endtime}" size="15" />
 			<input type="submit" value="搜索" class="button" />
-			<a href="report.php?action=export" style="height: 19px;background: #DDDDDD; border: 1px #DDDDDD solid;padding: 2px 8px 0px;display: inline-block;">导出</a>
+			<a href="report.php?action=export&starttime={$starttime}&endtime={$endtime}" style="height: 19px;background: #DDDDDD; border: 1px #DDDDDD solid;padding: 2px 8px 0px;display: inline-block;">导出</a>
 		</form>
 	</div>
 <form name="frm" action="report.php" method="post" enctype="multipart/form-data">
@@ -85,7 +85,7 @@ function select_time()
 
 
     <tr>
-      <td colspan="2" align="center"><a href="report.php?action=report_list">查询具体报表</a></td>
+      <td colspan="2" align="center"><a href="report.php?action=report_list&starttime={$starttime}&endtime={$endtime}">查询具体报表</a></td>
     </tr>
 </table>
 </form>
