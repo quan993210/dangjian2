@@ -295,9 +295,6 @@ function export(){
     /*require_once("/inc/plugin/PHPExcel/PHPExcel.php");
     require_once("/inc/plugin/PHPExcel/PHPExcel/IOFactory.php");
     require_once("/inc/plugin/PHPExcel/PHPExcel/Reader/Excel5.php");*/
-    print_r(111);
-
-
     global $db, $smarty;
     $where = "where status = 1";
     $starttime = crequest('starttime');
@@ -322,9 +319,10 @@ function export(){
 
     $sql = "SELECT sum(money) as money,sum(num) as num,sum(use_funds) as use_funds,sum(use_money) as use_money,sum(honor_country) as honor_country,sum(honor_province) as honor_province,sum(honor_city) as honor_city,sum(file_country) as file_country,sum(file_province) as file_province,sum(file_city) as file_city FROM report {$where}";
     $row = $db->get_row($sql);
-    print_r($row);
-    exit;
+
     $objPHPExcel = new PHPExcel();
+    print_r(111);
+    exit;
     /*以下是一些设置 ，什么作者  标题啊之类的*/
     $objPHPExcel->getProperties()->setCreator("转弯的阳光")
         ->setLastModifiedBy("转弯的阳光")
