@@ -246,7 +246,7 @@ function update_report()
 
     $now_page = irequest('now_page');
     $url_to = "report.php?action=report_list&page={$now_page}";
-    href_locate($url_to);
+    url_locate($url_to, '撤回成功');
 }
 
 /*------------------------------------------------------ */

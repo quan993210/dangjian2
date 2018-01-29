@@ -49,7 +49,7 @@ function report_list()
 
     //搜索条件
     $adminid  = $_SESSION["admin_id"];
-    $con = "WHERE status = 1 and adminid = $adminid";
+    $con = "WHERE adminid = $adminid";
     //关键字
     $keyword = crequest('keyword');
     $starttime = crequest('starttime');
@@ -113,6 +113,10 @@ function do_add_report()
     $info['add_time']	= time();
     $info['add_time_format']	= now_time();
     $info['adminid'] = $adminid;
+    $attachment = com_upload_file();
+    if($attachment){
+        $info['attachment'] = $attachment;
+    }
     $sql = "SELECT * FROM report WHERE adminid = '{$adminid}' and time='{$info['time']}'";
     $report = $db->get_row($sql);
     if($report){
@@ -180,6 +184,7 @@ function do_mod_report()
     if($attachment){
         $info['attachment'] = $attachment;
     }
+    $info['status'] = 1;
 
     $sql = "SELECT * FROM report WHERE adminid = '{$adminid}' and time='{$info['time']}'";
     $report = $db->get_row($sql);

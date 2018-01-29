@@ -65,6 +65,29 @@
 		  <option value="{$key}" {if $rank_titles == $key}selected {/if}>{$rank_title}</option>
 		  {/foreach}
 	  </select>
+	  <select name="is_party_affairs">
+		  <option value="0" selected >请选择为专职党务干事</option>
+		  <option value="1" {if $is_party_affairs == 1}selected {/if} >是为专职党务干事</option>
+		  <option value="2" {if $is_party_affairs == 2}selected {/if} >不是为专职党务干事</option>
+	  </select>
+
+	  <select name="is_discipline">
+		  <option value="0" selected >请选择违纪</option>
+		  <option value="1" {if $is_discipline == 1}selected {/if} >是违纪</option>
+		  <option value="2" {if $is_discipline == 2}selected {/if} >不是违纪</option>
+	  </select>
+
+	  <select name="is_retire">
+		  <option value="0" selected >请选择退休</option>
+		  <option value="1" {if $is_retire == 1}selected {/if} >是退休</option>
+		  <option value="2" {if $is_retire == 2}selected {/if} >不是退休备</option>
+	  </select>
+
+	  <select name="is_prepare">
+		  <option value="0" selected >请选择发展预备</option>
+		  <option value="1" {if $is_prepare == 1}selected {/if} >是发展预备</option>
+		  <option value="2" {if $is_prepare == 2}selected {/if} >不是发展预备</option>
+	  </select>
     <input type="submit" value="搜索" class="button" />
   </form>
 </div>

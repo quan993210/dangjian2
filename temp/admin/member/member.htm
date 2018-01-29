@@ -72,28 +72,28 @@
     <tr>
         <td class="label">是否为专职党务干事：</td>
         <td>
-            <input name="member[is_party_affairs]" type="radio" value="0" checked />否
+            <input name="member[is_party_affairs]" type="radio" value="2" {if $member.is_party_affairs == '2'}checked {/if} />否
             <input name="member[is_party_affairs]" type="radio" value="1" {if $member.is_party_affairs == '1'}checked {/if} />是
         </td>
     </tr>
     <tr>
         <td class="label">是否违纪：</td>
         <td>
-            <input name="member[is_discipline]" type="radio" value="0" checked />否
+            <input name="member[is_discipline]" type="radio" value="2" {if $member.is_discipline == '2'}checked {/if} />否
             <input name="member[is_discipline]" type="radio" value="1" {if $member.is_discipline == '1'}checked {/if} />是
         </td>
     </tr>
     <tr>
         <td class="label">是否是发展预备：</td>
         <td>
-            <input name="member[is_prepare]" type="radio" value="0" checked />否
+            <input name="member[is_prepare]" type="radio" value="2" {if $member.is_prepare == '2'}checked {/if} />否
             <input name="member[is_prepare]" type="radio" value="1" {if $member.is_prepare == '1'}checked {/if} />是
         </td>
     </tr>
     <tr>
         <td class="label">是否退休：</td>
         <td>
-            <input name="member[is_retire]" type="radio" value="0" checked />否
+            <input name="member[is_retire]" type="radio" value="2" {if $member.is_retire == '2'}checked {/if} />否
             <input name="member[is_retire]" type="radio" value="1" {if $member.is_retire == '1'}checked {/if} />是
         </td>
     </tr>

@@ -80,6 +80,34 @@ function member_list()
 		$con.= " AND rank_title = '{$rank_title}'";
 	}
 
+	$is_party_affairs = crequest('is_party_affairs');
+	$smarty->assign('is_party_affairs', $is_party_affairs);
+	if (!empty($is_party_affairs))
+	{
+		$con.= " AND is_party_affairs = '{$is_party_affairs}'";
+	}
+
+	$is_discipline = crequest('is_discipline');
+	$smarty->assign('is_discipline', $is_discipline);
+	if (!empty($is_discipline))
+	{
+		$con.= " AND is_discipline = '{$is_discipline}'";
+	}
+
+	$is_prepare = crequest('is_prepare');
+	$smarty->assign('is_prepare', $is_prepare);
+	if (!empty($is_prepare))
+	{
+		$con.= " AND is_prepare = '{$is_prepare}'";
+	}
+
+	$is_retire = crequest('is_retire');
+	$smarty->assign('is_retire', $is_retire);
+	if (!empty($is_retire))
+	{
+		$con.= " AND is_retire = '{$is_retire}'";
+	}
+
 
 	$order 	 	= 'ORDER BY userid DESC';
 
