@@ -367,13 +367,9 @@ function export(){
     $name='各党支部'.$text.'报表汇总_'.date('Y-m-d H:i:s');
     $objPHPExcel->getActiveSheet()->setTitle('User');
     $objPHPExcel->setActiveSheetIndex(0);
-    print_r(111);
-
     header('Content-Type: application/vnd.ms-excel');
     header('Content-Disposition: attachment;filename="'.$name.'.xls"');
     header('Cache-Control: max-age=0');
-    print_r(2222);
-    exit;
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
     $objWriter->save('php://output');
     exit;
