@@ -321,8 +321,7 @@ function export(){
     $row = $db->get_row($sql);
 
     $objPHPExcel = new PHPExcel();
-    print_r(111);
-    exit;
+
     /*以下是一些设置 ，什么作者  标题啊之类的*/
     $objPHPExcel->getProperties()->setCreator("转弯的阳光")
         ->setLastModifiedBy("转弯的阳光")
@@ -348,6 +347,8 @@ function export(){
         ->setCellValue('L1', '稿件发布（市厅级）');
 
     $num = 2;
+    print_r(111);
+    exit;
     $objPHPExcel->setActiveSheetIndex(0)
         //Excel的第A列，uid是你查出数组的键值，下面以此类推
         //->setCellValue('A'.$num, $row['orderid'])
@@ -367,6 +368,7 @@ function export(){
     $name='各党支部'.$text.'报表汇总_'.date('Y-m-d H:i:s');
     $objPHPExcel->getActiveSheet()->setTitle('User');
     $objPHPExcel->setActiveSheetIndex(0);
+
     header('Content-Type: application/vnd.ms-excel');
     header('Content-Disposition: attachment;filename="'.$name.'.xls"');
     header('Cache-Control: max-age=0');
