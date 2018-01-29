@@ -295,6 +295,8 @@ function export(){
     /*require_once("/inc/plugin/PHPExcel/PHPExcel.php");
     require_once("/inc/plugin/PHPExcel/PHPExcel/IOFactory.php");
     require_once("/inc/plugin/PHPExcel/PHPExcel/Reader/Excel5.php");*/
+    print_r(111);
+    exit;
 
     global $db, $smarty;
     $where = "where status = 1";
