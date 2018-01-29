@@ -110,20 +110,17 @@ function do_add_report()
     global $db;
     $adminid  = $_SESSION["admin_id"];
     $info = $_POST['info'];
-    $attachment = com_upload_file();
-    if($attachment){
-        $info['attachment'] = $attachment;
-    }
-
+    $info['add_time']	= time();
+    $info['add_time_format']	= now_time();
+    $info['adminid'] = $adminid;
     $sql = "SELECT * FROM report WHERE adminid = '{$adminid}' and time='{$info['time']}'";
     $report = $db->get_row($sql);
-    $id = irequest('id');
-    if($report && $report['id'] != $id){
+    if($report){
         alert_back('同时间段报表只能提交一次');
     }
-    $db->update('report',$info,"id='{$id}'");
+    $reportid = $db->insert('report',$info);
     $aid  = $_SESSION['admin_id'];
-    $text = '修改报表，修改报表ID：' . $id;
+    $text = '添加报表，添加报表ID：' . $reportid;
     operate_log($aid, 'report', 1, $text);
 
     $url_to = "report.php?action=list";
@@ -177,19 +174,25 @@ function mod_report()
 function do_mod_report()
 {
     global $db;
+    $adminid  = $_SESSION["admin_id"];
     $info = $_POST['info'];
-    $lables = $_POST['lables'];
-    $info['lables'] = implode(',',$lables);
-    check_null($info['title'], 			'标题');
-    $id = irequest('id');
-    $db->update('report',$info,"id='{$id}'");
-    unset($_SESSION['image1'],$_SESSION['image2'],$_SESSION['image3']);
-    $aid  = $_SESSION['admin_id'];
-    $text = '修改新闻，修改新闻ID：' . $id;
-    operate_log($aid, 'report', 2, $text);
+    $attachment = com_upload_file();
+    if($attachment){
+        $info['attachment'] = $attachment;
+    }
 
-    $now_page = irequest('now_page');
-    $url_to = "report.php?action=list&page={$now_page}";
+    $sql = "SELECT * FROM report WHERE adminid = '{$adminid}' and time='{$info['time']}'";
+    $report = $db->get_row($sql);
+    $id = irequest('id');
+    if($report && $report['id'] != $id){
+        alert_back('同时间段报表只能提交一次');
+    }
+    $db->update('report',$info,"id='{$id}'");
+    $aid  = $_SESSION['admin_id'];
+    $text = '修改报表，修改报表ID：' . $id;
+    operate_log($aid, 'report', 1, $text);
+
+    $url_to = "report.php?action=list";
     url_locate($url_to, '修改成功');
 }
 
