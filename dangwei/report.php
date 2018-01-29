@@ -292,11 +292,9 @@ function update_report()
 //导出
 function export(){
     //$cashflow_db = pc_base::load_model('cashflow_model');
-    print_r(1111);
-    require_once '../inc/plugin/PHPExcel/PHPExcel.php';
-    require_once '../inc/plugin/PHPExcel/PHPExcel/IOFactory.php';
-    require_once '../inc/plugin/PHPExcel/PHPExcel/Reader/Excel5.php';
-    print_r(222);
+    require_once URL_PATH.'/inc/plugin/PHPExcel/PHPExcel.php';
+    require_once URL_PATH.'/inc/plugin/PHPExcel/PHPExcel/IOFactory.php';
+    require_once URL_PATH.'/inc/plugin/PHPExcel/PHPExcel/Reader/Excel5.php';
     global $db, $smarty;
     $where = "where status = 1";
     $starttime = crequest('starttime');
