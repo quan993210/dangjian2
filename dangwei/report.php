@@ -19,23 +19,11 @@ switch ($action)
     case "report_list":
         report_list();
         break;
-    case "add_report":
-        add_report();
-        break;
-    case "do_add_report":
-        do_add_report();
-        break;
     case "mod_report":
         mod_report();
         break;
-    case "do_mod_report":
-        do_mod_report();
-        break;
-    case "del_report":
-        del_report();
-        break;
-    case "del_sel_report":
-        del_sel_report();
+    case "update_report":
+        update_report();
         break;
     case "export":
         export();
@@ -242,7 +230,7 @@ function mod_report()
 /*------------------------------------------------------ */
 //-- 删除新闻
 /*------------------------------------------------------ */
-function updatel_report()
+function update_report()
 {
     global $db;
 
