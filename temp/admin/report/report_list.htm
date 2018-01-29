@@ -74,7 +74,7 @@
 		  <td>
           	<a href="report.php?action=detail_report&id={$report_list[loop].id}&now_page={$now_page}">详情</a>
 			  {if $report_list[loop].status == 0}
-			  |<a href="report.php?action=mod_report&id={$report_list[loop].id}&now_page={$now_page}">修改</a>
+			  |<a style="color: red" href="report.php?action=mod_report&id={$report_list[loop].id}&now_page={$now_page}">修改</a>
 			  {/if}
 		  </td>
 		</tr>  
