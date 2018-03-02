@@ -1,6 +1,10 @@
 <?php
 set_include_path(dirname(dirname(__FILE__)));
 include_once("inc/init.php");
+define('BD_APP_ID',10871419);
+define('BD_API_KEY','74gv9lTzWiVZNxyqMqXBYiEs');
+define('BD_SECRET_KEY','cpP5hWMTyllhgmeIvVXaddnXQqEaGSd0');
+
 
 $action = crequest("action");
 $action = $action == '' ? 'list' : $action; 
@@ -57,7 +61,7 @@ function get_con()
 	$smarty->assign('lable', $lables);
 	if (!empty($lables))
 	{
-		$con .=" AND a.lables in ({$lables}) ";
+		$con .=" AND a.lables like  '%{$lables}%'";
 	}
 	//关键字
 	$keyword = crequest('keyword');
@@ -159,6 +163,10 @@ function do_add_news()
 	check_null($info['catid'], 			'分类');
 	check_null($info['title'], 			'标题');
 	check_null($info['content'], 			'新闻');
+
+
+	/*$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
+	$result = $client->synthesis('你好百度', 'zh', 1, array('vol' => 5,));*/
 
 	$newsid = $db->insert('news',$info);
 	unset($_SESSION['image1'],$_SESSION['image2'],$_SESSION['image3']);

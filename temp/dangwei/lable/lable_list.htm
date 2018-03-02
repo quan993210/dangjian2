@@ -24,7 +24,7 @@
 	
 	function check_del(url)
 	{
-		if(confirm("您是否确认删除该新闻分类！"))
+		if(confirm("您是否确认删除该标签！"))
 		{
 			location.href = url;
 		}
@@ -66,7 +66,7 @@
 			<td>{$list[loop].add_time_format}</td>
 		  <td>
           	<a href="lable.php?action=mod_lable&id={$list[loop].id}&now_page={$now_page}">修改</a> |
-          	<a href="javascript:void(0);" onclick="check_del('lable.php?action=updatel_report&id={$list[loop].id}&now_page={$now_page}');">删除</a>
+          	<a href="javascript:void(0);" onclick="check_del('lable.php?action=del_lable&id={$list[loop].id}&now_page={$now_page}');">删除</a>
           </td>
 		</tr>  
 	{/section}

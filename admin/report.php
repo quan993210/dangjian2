@@ -274,7 +274,7 @@ function del_sel_report()
 function com_upload_file()
 {
    // $imgext = array('.jpg','.gif','.png','.jpeg');
-    $fileext = array('.docx','pdf','.doc','.xls','.xlsx');
+    $fileext = array('.docx','pdf','.doc','.xls','.xlsx','.jpg','.png');
     $upload_name = "attachment";
     $targetDir   = $_SERVER['DOCUMENT_ROOT'] . '/upload/report/' . date('ym') . '/';
 
