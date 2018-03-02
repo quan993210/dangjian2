@@ -166,7 +166,12 @@ function do_add_news()
 
 
 	/*$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
-	$result = $client->synthesis('你好百度', 'zh', 1, array('vol' => 5,));*/
+	$result = $client->synthesis('你好百度', 'zh', 1, array('vol' => 5,));
+	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
+	if(!is_array($result)){
+		file_put_contents('audio.mp3', $result);
+	}
+	*/
 
 	$newsid = $db->insert('news',$info);
 	unset($_SESSION['image1'],$_SESSION['image2'],$_SESSION['image3']);
