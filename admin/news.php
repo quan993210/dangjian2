@@ -227,9 +227,11 @@ function do_mod_news()
 	$result = $client->synthesis('你好百度,这里是语音文字测试', 'zh', 1, array('vol' => 5,));
 	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
 	if(!is_array($result)){
-		file_put_contents('audio.mp3', $result);
-		$newFile=$_SERVER['DOCUMENT_ROOT'].'/upload/mp3/audio.mp3'; //新目录
-		rename('audio.mp3',$newFile); //拷贝到新目录
+		$file = $id.'_audio.mp3';
+		$newFile=$_SERVER['DOCUMENT_ROOT'].'/upload/mp3/audio.mp3';
+		file_put_contents($file, $result);
+
+		rename($file,$newFile); //拷贝到新目录
 	}
 	unset($_SESSION['image1'],$_SESSION['image2'],$_SESSION['image3']);
 	$aid  = $_SESSION['admin_id'];
