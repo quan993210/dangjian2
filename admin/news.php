@@ -80,6 +80,16 @@ function get_con()
 /*------------------------------------------------------ */	
 function news_list()
 {
+	$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
+	$result = $client->synthesis('你好百度', 'zh', 1, array('vol' => 5,));
+	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
+	if(!is_array($result)){
+		file_put_contents('12_audio.mp3', $result);
+		$fp = fopen("13_audio.mp3", "w");
+		fwrite($fp, $result);
+		fclose($fp);
+	}
+
 	global $db, $smarty;
 	
 	//搜索条件
@@ -165,13 +175,6 @@ function do_add_news()
 	check_null($info['content'], 			'新闻');
 
 	$newsid = $db->insert('news',$info);
-
-	$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
-	$result = $client->synthesis('你好百度', 'zh', 1, array('vol' => 5,));
-	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
-	if(!is_array($result)){
-		file_put_contents($newsid.'_audio.mp3', $result);
-	}
 
 	unset($_SESSION['image1'],$_SESSION['image2'],$_SESSION['image3']);
 
