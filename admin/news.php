@@ -390,9 +390,18 @@ function get_vote()
 }
 
 function speech($id,$content){
+	//从数据库获取富文本string
+	$string = $content;
+    //把一些预定义的 HTML 实体转换为字符
+	$html_string = htmlspecialchars_decode($string);
+    //将空格替换成空
+	$content = str_replace(" ", "", $html_string);
+    //函数剥去字符串中的 HTML、XML 以及 PHP 的标签,获取纯文本内容
+	$contents = strip_tags($content);
+
 	//文字转语音
 	$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
-	$result = $client->synthesis($content, 'zh', 1, array('vol' => 5,));
+	$result = $client->synthesis($contents, 'zh', 1, array('vol' => 5,));
 	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
 	if(!is_array($result)){
 		$newFile=$_SERVER['DOCUMENT_ROOT'].'/upload/mp3/'.$id.'_audio.mp3';
