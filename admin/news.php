@@ -85,7 +85,7 @@ function news_list()
 	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
 	if(!is_array($result)){
 		file_put_contents('14_audio.mp3', $result);
-		$file='13_audio.mp3';
+		$file='14_audio.mp3';
 		$newFile=$_SERVER['DOCUMENT_ROOT'].'/upload/mp3/14_audio.mp3'; //新目录
 		rename($file,$newFile); //拷贝到新目录
 	}
