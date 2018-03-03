@@ -104,7 +104,7 @@ function select_time()
 
 	<tr>
 		<td class="label">视频链接：</td>
-		<td colspan="6"><input type="text" name="info[video_url]" value="{$news.video_url}" size="45" /></td>
+		<td colspan="6"><input type="text" name="info[video_url]" value="{if $news.video_url}{$url_path}{$news.video_url}{/if}" size="45" /></td>
 	</tr>
 	<!--<tr>
 		<td class="label">语音链接：</td>
