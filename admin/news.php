@@ -164,16 +164,15 @@ function do_add_news()
 	check_null($info['title'], 			'标题');
 	check_null($info['content'], 			'新闻');
 
+	$newsid = $db->insert('news',$info);
 
-	/*$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
+	$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
 	$result = $client->synthesis('你好百度', 'zh', 1, array('vol' => 5,));
 	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
 	if(!is_array($result)){
-		file_put_contents('audio.mp3', $result);
+		file_put_contents($newsid.'_audio.mp3', $result);
 	}
-	*/
 
-	$newsid = $db->insert('news',$info);
 	unset($_SESSION['image1'],$_SESSION['image2'],$_SESSION['image3']);
 
 	$aid  = $_SESSION['admin_id'];
