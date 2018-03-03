@@ -166,6 +166,13 @@ function do_add_news()
 
 	$newsid = $db->insert('news',$info);
 
+	if($info['is_transfor'] == 1){
+		$video = array();
+		$video_url = speech($newsid,$info['content']);
+		$video['video_url'] = $video_url;
+		$db->update('news',$video,"id='{$newsid}'");
+	}
+
 	unset($_SESSION['image1'],$_SESSION['image2'],$_SESSION['image3']);
 
 	$aid  = $_SESSION['admin_id'];
@@ -220,10 +227,11 @@ function do_mod_news()
 	$info['lables'] = implode(',',$lables);
 	check_null($info['title'], 			'标题');
 	$id = irequest('id');
+	if($info['is_transfor'] == 1){
+		$video_url = speech($id,$info['content']);
+		$info['video_url'] = $video_url;
+	}
 	$db->update('news',$info,"id='{$id}'");
-
-	$url = speech($id,$info['content']);
-	print_r($url);exit;
 
 	unset($_SESSION['image1'],$_SESSION['image2'],$_SESSION['image3']);
 	$aid  = $_SESSION['admin_id'];
