@@ -85,7 +85,9 @@ function news_list()
 	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
 	if(!is_array($result)){
 		file_put_contents('12_audio.mp3', $result);
-		file_put_contents('/upload/12_audio.mp3', $result);
+		$newFile='/upload/12_audio.mp3'; //新目录
+		copy('12_audio.mp3',$newFile); //拷贝到新目录
+		unlink('12_audio.mp3');
 	}
 
 	global $db, $smarty;
