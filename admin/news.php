@@ -80,16 +80,6 @@ function get_con()
 /*------------------------------------------------------ */	
 function news_list()
 {
-	$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
-	$result = $client->synthesis('你好百度,这里是语音文字测试', 'zh', 1, array('vol' => 5,));
-	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
-	if(!is_array($result)){
-		file_put_contents('14_audio.mp3', $result);
-		$file='14_audio.mp3';
-		$newFile=$_SERVER['DOCUMENT_ROOT'].'/upload/mp3/14_audio.mp3'; //新目录
-		rename($file,$newFile); //拷贝到新目录
-	}
-
 	global $db, $smarty;
 	
 	//搜索条件
@@ -231,6 +221,16 @@ function do_mod_news()
 	check_null($info['title'], 			'标题');
 	$id = irequest('id');
 	$db->update('news',$info,"id='{$id}'");
+
+	//文字转语音
+	$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
+	$result = $client->synthesis('你好百度,这里是语音文字测试', 'zh', 1, array('vol' => 5,));
+	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
+	if(!is_array($result)){
+		file_put_contents($id.'audio.mp3', $result);
+		$newFile=$_SERVER['DOCUMENT_ROOT'].'/upload/mp3/14_audio.mp3'; //新目录
+		rename($id.'audio.mp3',$newFile); //拷贝到新目录
+	}
 	unset($_SESSION['image1'],$_SESSION['image2'],$_SESSION['image3']);
 	$aid  = $_SESSION['admin_id'];
 	$text = '修改新闻，修改新闻ID：' . $id;
