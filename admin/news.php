@@ -86,8 +86,8 @@ function news_list()
 	if(!is_array($result)){
 		file_put_contents('12_audio.mp3', $result);
 		$newFile='/upload/12_audio.mp3'; //新目录
-		copy('12_audio.mp3',$newFile); //拷贝到新目录
-		unlink('12_audio.mp3');
+		copy('/admin/12_audio.mp3',$newFile); //拷贝到新目录
+		unlink('/admin/12_audio.mp3');
 	}
 
 	global $db, $smarty;
