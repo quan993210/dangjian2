@@ -81,13 +81,11 @@ function get_con()
 function news_list()
 {
 	$client = new AipSpeech(BD_APP_ID, BD_API_KEY, BD_SECRET_KEY);
-	$result = $client->synthesis('你好百度', 'zh', 1, array('vol' => 5,));
+	$result = $client->synthesis('你好百度,这里是语音文字测试', 'zh', 1, array('vol' => 5,));
 	// 识别正确返回语音二进制 错误则返回json 参照下面错误码
 	if(!is_array($result)){
 		file_put_contents('12_audio.mp3', $result);
-		$fp = fopen("13_audio.mp3", "w");
-		fwrite($fp, $result);
-		fclose($fp);
+		file_put_contents('/upload/12_audio.mp3', $result);
 	}
 
 	global $db, $smarty;
