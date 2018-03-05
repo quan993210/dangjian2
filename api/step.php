@@ -12,6 +12,13 @@ if (!session_id()) session_start();
 
 $action = crequest("action");
 $action = $action == '' ? 'add' : $action;
+$adminid  = $_POST["adminid"];
+$sql = "SELECT * FROM admin WHERE id = '{$adminid}'";
+$res = $db->get_row($sql);
+define('APPID',$res['appid']);
+define('MCH_ID',$res['mch_id']);
+define('WX_KEY',$res['wx_key']);
+define('APPSECRET',$res['appsecret']);
 
 switch ($action)
 {
@@ -22,6 +29,35 @@ switch ($action)
         get_step();
         break;
 }
+
+function step(){
+    $encryptedData=$_POST['encryptedData'];
+    $iv = $_POST['iv'];
+    $code = $_POST['code'];
+    $sessionKey = wxCode($code);
+
+    if (empty($sessionKey)){
+        showapierror('sessionKey缺失');
+    }
+    if (empty($encryptedData)){
+        showapierror('encryptedData缺失');
+    }
+    if (empty($iv)){
+        showapierror('iv缺失');
+    }
+
+    require(ROOT_PATH . 'inc/weixin/wxBizDataCrypt.php');
+    $pc = new WXBizDataCrypt(APPID, $sessionKey);
+    $errCode = $pc->decryptData($encryptedData, $iv, $data );
+
+    if ($errCode == 0) {
+        showapisuccess($data);
+    } else {
+        showapierror($errCode);
+    }
+
+}
+
 
 function add_step(){
     global $db;
@@ -88,6 +124,57 @@ function get_step(){
     }else{
         showapierror('参数错误！');
     }
+}
+
+
+function wxCode($code){
+    if (empty($code)){
+        showapierror(-1,'code缺失');
+    }
+
+    //拼装url
+    $url = "https://api.weixin.qq.com/sns/jscode2session?appid=".APPID."&secret=".APPSECRET."&js_code=".$code."&grant_type=authorization_code ";
+
+    $data = https_request($url);
+
+    $result = json_decode($data,true);
+    /* print_r($result);
+    $result =array(
+        'session_key' => '0DNVAurXvrRETr/iYreT3w==',
+        'expires_in' => '7200',
+        'openid' => 'oEvcj0TtmllEYWaqDVl94QUkQcbE'
+    );*/
+
+
+    if (!array_key_exists('errcode',$result)){
+        $session_key = $result['session_key'];
+
+        return $session_key;
+    }else{
+        //error log
+        return false;
+    }
+
+}
+
+/**
+ * @explain
+ * 发送http请求，并返回数据
+ **/
+function https_request($url, $data = null)
+{
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+    if (!empty($data)) {
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    }
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $output = curl_exec($curl);
+    curl_close($curl);
+    return $output;
 }
 
 
