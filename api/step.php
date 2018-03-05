@@ -22,6 +22,9 @@ define('APPSECRET',$res['appsecret']);
 
 switch ($action)
 {
+    case "step":
+        step();
+        break;
     case "add_step":
         add_step();
         break;
