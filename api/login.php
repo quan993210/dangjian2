@@ -19,7 +19,6 @@ if(isset($_POST['mobile']) && !empty($_POST['mobile']) && isset($_POST['code']) 
     }else{
         $sql = "SELECT * FROM member WHERE mobile=$mobile AND code =$code and adminid='{$adminid}'";
     }
-
     $member = $db->get_row($sql);
     if($member){
         showapisuccess($member);
