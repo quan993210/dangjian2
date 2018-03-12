@@ -38,6 +38,7 @@ function step(){
     $iv = $_POST['iv'];
     $code = $_POST['code'];
     $sessionKey = wxCode($code);
+    print_r($sessionKey);
 
     if (empty($sessionKey)){
         showapierror('sessionKey缺失');
