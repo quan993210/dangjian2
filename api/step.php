@@ -38,7 +38,7 @@ function step(){
     $iv = $_POST['iv'];
     $code = $_POST['code'];
     $sessionKey = wxCode($code);
-    print_r($sessionKey);
+  //  $sessionKey = 'I5aZNQ+0RT23CcPDFdllPg==';
 
     if (empty($sessionKey)){
         showapierror('sessionKey缺失');
@@ -55,7 +55,8 @@ function step(){
     $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
     if ($errCode == 0) {
-        showapisuccess($data);
+        echo $data;
+        exit;
     } else {
         showapierror($errCode);
     }
