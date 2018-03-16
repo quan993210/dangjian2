@@ -125,6 +125,12 @@ function get_step(){
         $adminid  = $_POST["adminid"];
         $sql 		= "SELECT * FROM step WHERE timestamp = '{$time}' and adminid = $adminid ORDER BY step DESC ";
         $arr 		= $db->get_all($sql);
+        foreach($arr as $key=>$val){
+            $sql 		= "SELECT * FROM member WHERE userid = '{$val['userid']}'";
+            $user 		= $db->get_row($sql);
+            $arr[$key]['avatar'] = $user['avatar'];
+            $arr[$key]['username'] = $user['username'];
+        }
         showapisuccess($arr);
     }else{
         showapierror('参数错误！');
