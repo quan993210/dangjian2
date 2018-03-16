@@ -129,7 +129,7 @@ function get_step(){
             $sql 		= "SELECT * FROM member WHERE userid = '{$val['userid']}'";
             $user 		= $db->get_row($sql);
             $arr[$key]['avatar'] = $user['avatar'];
-            $arr[$key]['username'] = $user['username'];
+            $arr[$key]['username'] = $user['name'];
         }
         showapisuccess($arr);
     }else{
