@@ -79,7 +79,7 @@ function add_step(){
 //    ]';
 //        $userid = 1;
 //        $adminid = 1;
-        $userid = $_POST['userid'];
+        $userid = $_POST['userid'] ? $_POST['userid'] : showapierror('用户id不存在！');
         $stepInfoList = $_POST['stepInfoList'];
         $adminid = $_POST['adminid'];
         $stepInfoList = json_decode($stepInfoList,true);
