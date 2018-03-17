@@ -96,7 +96,7 @@ function add_step(){
             $info['adminid'] = $adminid;
             $info['add_time']	= time();
             $info['add_time_format']	= now_time();
-            $sql = "SELECT * FROM step WHERE timestamp = '{$timestamp}'";
+            $sql = "SELECT * FROM step WHERE timestamp = '{$timestamp}' and userid = '{$userid}'";
             $step = $db->get_row($sql);
             if($step){
                 $db->update('step',$info,"id={$step['id']}");
