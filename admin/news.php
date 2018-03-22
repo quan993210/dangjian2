@@ -169,7 +169,7 @@ function do_add_news()
 	if($info['is_transfor'] == 1){
 		$video = array();
 		$video_url = speech($newsid,$info['content']);
-		$video['video_url'] = $video_url;
+		$video['audio_url'] = URL_PATH.$video_url;
 		$db->update('news',$video,"id='{$newsid}'");
 	}
 
@@ -229,7 +229,7 @@ function do_mod_news()
 	$id = irequest('id');
 	if($info['is_transfor'] == 1){
 		$video_url = speech($id,$info['content']);
-		$info['video_url'] = $video_url;
+		$info['audio_url'] = URL_PATH.$video_url;
 	}
 	$db->update('news',$info,"id='{$id}'");
 

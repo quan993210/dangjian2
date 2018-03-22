@@ -104,12 +104,12 @@ function select_time()
 
 	<tr>
 		<td class="label">视频链接：</td>
-		<td colspan="6"><input type="text" name="info[video_url]" value="{if $news.video_url}{$url_path}{$news.video_url}{/if}" size="45" /></td>
+		<td colspan="6"><input type="text" name="info[video_url]" value="{if $news.video_url}{$news.video_url}{/if}" size="45" /></td>
 	</tr>
-	<!--<tr>
+	<tr>
 		<td class="label">语音链接：</td>
-		<td colspan="6"><input type="text" name="info[audio_url]" value="{$news.audio_url}" size="45" /></td>
-	</tr>-->
+		<td colspan="6"><input type="text" name="info[audio_url]" value="{if $news.audio_url}{$news.audio_url}{/if}" size="45" /></td>
+	</tr>
 	<tr>
 		<td class="label">文字转语音：</td>
 		<td colspan="6"><input type="checkbox" {if $news.is_transfor ==1} checked{/if} name="info[is_transfor]" value="1"/>(勾选后，手机可播放语音)</td>
