@@ -122,7 +122,7 @@ function select_time()
 		<td class="label">添加投票：</td>
 		<td colspan="6">
 			<select name="info[voteid]" id="voteid">
-				<option value="0">选择投票</option>
+				<option value="99" {if $news.voteid eq 99 || $news.voteid eq 0}selected{/if}>选择投票</option>
 				{section name=loop loop=$vote}
 				<option value="{$vote[loop].id}" {if $news.voteid eq $vote[loop].id}selected{/if}>{$vote[loop].title}</option>
 				{/section}
