@@ -182,7 +182,7 @@ class cls_mysql
     function update($table,$data,$where=null){
         $sets = "";
         foreach ($data as $key=>$val){
-            if(!empty($val)){
+            if($val != ""){
                 $sets.=$key."='".$val."',";
             }
         }

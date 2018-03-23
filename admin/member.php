@@ -158,7 +158,7 @@ function do_add_member()
 	$sql = "SELECT * FROM member WHERE mobile = '{$info['mobile']}'";
 	$member = $db->get_row($sql);
 	if($member){
-		$info['is_delete'] = 0;
+		$info['is_delete'] = '0';
 		$db->update('member',$info,"userid = {$member['userid']}");
 	}else{
 		$id = $db->insert('member',$info);
