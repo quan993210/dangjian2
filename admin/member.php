@@ -159,7 +159,7 @@ function do_add_member()
 	$member = $db->get_row($sql);
 	if($member){
 		$info['is_delete'] = 0;
-		$db->update('member',$info,"userid = '{$member['userid']}'");
+		$db->update('member',$info,"userid = {$member['userid']}");
 	}else{
 		$id = $db->insert('member',$info);
 	}
