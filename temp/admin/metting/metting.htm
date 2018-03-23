@@ -72,7 +72,7 @@
                 <option value="{$key}" {if $member.grade == $key}selected {/if}>{$grade}</option>
                 {/foreach}
             </select>
-            <select name="info[title]">
+            <select name="info[rank_title]">
                 {foreach item=rank_title key=key from=$info.rank_title}
                 <option value="{$key}" {if $member.rank_title == $key}selected {/if}>{$rank_title}</option>
                 {/foreach}

@@ -146,7 +146,6 @@ function do_add_metting()
     $adminid  = $_SESSION["admin_id"];
     $flg  = crequest('flg');
     $data = $_POST['info'];
-    print_r($data);exit;
     if($flg){
         $data['flg'] = $flg;
     }else{
@@ -155,7 +154,6 @@ function do_add_metting()
     $data['add_time'] = time();
     $data['add_time_format'] = now_time();
     $data['adminid'] = $adminid;
-    print_r($data);exit;
     check_null($data['title'], 			'会议标题');
     check_null($data['sum'], 			'参加人数');
     check_null($data['start_time'], 			'开始时间');
