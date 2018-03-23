@@ -146,6 +146,7 @@ function do_add_metting()
     $adminid  = $_SESSION["admin_id"];
     $flg  = crequest('flg');
     $data = $_POST['info'];
+    print_r($data);exit;
     if($flg){
         $data['flg'] = $flg;
     }else{
