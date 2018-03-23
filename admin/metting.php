@@ -145,8 +145,8 @@ function do_add_metting()
     global $db;
     $adminid  = $_SESSION["admin_id"];
     $flg  = crequest('flg');
+    $data = $_POST['info'];
     if($flg){
-        $data = $_POST['info'];
         $data['flg'] = $flg;
     }else{
         $data['flg'] = 0;

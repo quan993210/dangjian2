@@ -158,14 +158,11 @@ function do_add_member()
 	$sql = "SELECT * FROM member WHERE mobile = '{$info['mobile']}'";
 	$member = $db->get_row($sql);
 	if($member){
-		alert_back('系统已存在该手机号，请勿重复添加！');
+		$info['is_delete'] = 0;
+		$db->update('member',$info,"userid = '{$member['userid']}''");
+	}else{
+		$id = $db->insert('member',$info);
 	}
-
-	$id = $db->insert('member',$info);
-	$aid  = $_SESSION['admin_id'];
-	$text = '添加用户，添加用户ID：' . $id;
-	operate_log($aid, 'member', 1, $text);
-
 	$url_to = "member.php?action=list";
 	url_locate($url_to, '添加成功');
 }
