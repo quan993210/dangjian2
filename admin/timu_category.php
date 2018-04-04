@@ -128,7 +128,7 @@ function do_add_timu_category()
 	$add_time_format	= now_time();
 	check_null($name, '题目分类名称');
 	
-	$sql = "INSERT INTO timu_category (name,logo, add_time, add_time_format,adminid) VALUES ('{$name}', '{$logo}', '{$add_time}', '{$add_time_format}',{$adminid}'')";
+	$sql = "INSERT INTO timu_category (name,logo, add_time, add_time_format,adminid) VALUES ('{$name}', '{$logo}', '{$add_time}', '{$add_time_format}','{$adminid}')";
 	$db->query($sql);
 
 	$aid  = $_SESSION['admin_id'];

@@ -150,13 +150,13 @@ function do_add_test()
 
 	if(is_array($result) && $result){
 		//插入测试试卷表
-		$sql = "INSERT INTO test (title,limit_count,limit_time, timu_catids,add_time,add_time_format,adminid) VALUES ('{$title}', '{$limit_count}', '{$limit_time}', '{$catids}', '{$time}', '{$now_time}',{$adminid}'')";
+		$sql = "INSERT INTO test (title,limit_count,limit_time, timu_catids,add_time,add_time_format,adminid) VALUES ('{$title}', '{$limit_count}', '{$limit_time}', '{$catids}', '{$time}', '{$now_time}','{$adminid}')";
 		$db->query($sql);
 
 		$testid = $db->link_id->insert_id;
 		//插入测试题目表
 		foreach($result as $key=>$val){
-			$sql = "INSERT INTO test_timu (testid,timuid,add_time,add_time_format,adminid) VALUES ('{$testid}', '{$val['timuid']}', '{$time}','{$now_time}',{$adminid}'')";
+			$sql = "INSERT INTO test_timu (testid,timuid,add_time,add_time_format,adminid) VALUES ('{$testid}', '{$val['timuid']}', '{$time}','{$now_time}','{$adminid}')";
 			$db->query($sql);
 		}
 	}
@@ -243,7 +243,7 @@ function do_mod_test()
 		$db->query($sql);
 		//插入测试题目表
 		foreach($result as $key=>$val){
-			$sql = "INSERT INTO test_timu (testid,timuid,add_time,add_time_format,adminid) VALUES ('{$testid}', '{$val['timuid']}', '{$time}','{$now_time}',{$adminid}'')";
+			$sql = "INSERT INTO test_timu (testid,timuid,add_time,add_time_format,adminid) VALUES ('{$testid}', '{$val['timuid']}', '{$time}','{$now_time}','{$adminid}')";
 			$db->query($sql);
 		}
 	}
