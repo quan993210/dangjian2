@@ -198,7 +198,6 @@ function do_mod_member()
 	/*if($member && $member['userid'] != $userid){
 		alert_back('系统已存在该手机号，请勿重复添加！');
 	}*/
-
 	$db->update('member',$info,"userid=$userid");
 
 	$aid  = $_SESSION['admin_id'];
