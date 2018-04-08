@@ -195,9 +195,9 @@ function do_mod_member()
 	$userid 	  	= irequest('userid');
 	$sql = "SELECT * FROM member WHERE mobile = '{$info['mobile']}'";
 	$member = $db->get_row($sql);
-	if($member && $member['userid'] != $userid){
+	/*if($member && $member['userid'] != $userid){
 		alert_back('系统已存在该手机号，请勿重复添加！');
-	}
+	}*/
 
 	$db->update('member',$info,"userid=$userid");
 
