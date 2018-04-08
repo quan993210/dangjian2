@@ -151,7 +151,7 @@ function do_add_test()
 
 	if(is_array($result) && $result){
 		//插入测试试卷表
-		$sql = "INSERT INTO test (title,limit_count,limit_time, timu_catids,add_time,add_time_format,adminid,) VALUES ('{$title}', '{$limit_count}', '{$limit_time}', '{$catids}', '{$time}', '{$now_time}','{$adminid}')";
+		$sql = "INSERT INTO test (title,limit_count,limit_time, timu_catids,add_time,add_time_format,adminid) VALUES ('{$title}', '{$limit_count}', '{$limit_time}', '{$catids}', '{$time}', '{$now_time}','{$adminid}')";
 		$db->query($sql);
 
 		$testid = $db->link_id->insert_id;
