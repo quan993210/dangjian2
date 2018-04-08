@@ -108,6 +108,12 @@ function creat_dati(){
             showapierror('参数错误！');
         }
 
+        if($test_timu['flg'] == 1){
+            if($test_timu['grade'] != $member['grade'] ||$test_timu['rank_title'] != $member['rank_title'] || $test_timu['identity'] != $member['identity'] || $test_timu['position'] != $member['position'] || $test_timu['is_party_affairs'] != $member['is_party_affairs'] || $test_timu['is_discipline'] != $member['is_discipline'] ||$test_timu['is_prepare'] != $member['is_prepare'] ||$test_timu['is_retire'] != $member['is_retire'] ){
+                showapierror('不是会议指定人群，禁止答题');
+            }
+        }
+
         $test_dati_id = $_POST['test_dati_id'];
         //重新点击  存在答题记录
         if($test_dati_id){
@@ -193,6 +199,11 @@ function submit_dati(){
         $testid = $_POST['testid'];
         $sql = "SELECT * FROM test WHERE testid='{$testid}' and adminid='{$adminid}'";
         $test = $db->get_row($sql);
+        if($test['flg'] == 1){
+            if($test['grade'] != $member['grade'] ||$test['rank_title'] != $member['rank_title'] || $test['identity'] != $member['identity'] || $test['position'] != $member['position'] || $test['is_party_affairs'] != $member['is_party_affairs'] || $test['is_discipline'] != $member['is_discipline'] ||$test['is_prepare'] != $member['is_prepare'] ||$test['is_retire'] != $member['is_retire'] ){
+                showapierror('不是会议指定人群，禁止答题');
+            }
+        }
         if(!is_array($test) && !$test){
             showapierror('参数错误！');
         }

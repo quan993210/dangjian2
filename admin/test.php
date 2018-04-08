@@ -104,7 +104,7 @@ function add_test()
 	
 	//题目分类
 	$smarty->assign('test_category',  get_test_category());
-
+	$smarty->assign('info', get_member_info());
 	$smarty->assign('action', 'do_add_test');
 	$smarty->assign('page_title', '添加测试');
 	$smarty->display('test/test.htm');
@@ -122,6 +122,7 @@ function do_add_test()
 	$limit_count	  = irequest('limit_count');
 	$now_time = now_time();
 	$time = time();
+	$info = $_POST['info'];
 
 	check_null($title, 			'测试标题');
 	check_null($limit_time, 			'测试时间');
@@ -150,10 +151,11 @@ function do_add_test()
 
 	if(is_array($result) && $result){
 		//插入测试试卷表
-		$sql = "INSERT INTO test (title,limit_count,limit_time, timu_catids,add_time,add_time_format,adminid) VALUES ('{$title}', '{$limit_count}', '{$limit_time}', '{$catids}', '{$time}', '{$now_time}','{$adminid}')";
+		$sql = "INSERT INTO test (title,limit_count,limit_time, timu_catids,add_time,add_time_format,adminid,) VALUES ('{$title}', '{$limit_count}', '{$limit_time}', '{$catids}', '{$time}', '{$now_time}','{$adminid}')";
 		$db->query($sql);
 
 		$testid = $db->link_id->insert_id;
+		$db->update('test',$info,"testid=$testid");
 		//插入测试题目表
 		foreach($result as $key=>$val){
 			$sql = "INSERT INTO test_timu (testid,timuid,add_time,add_time_format,adminid) VALUES ('{$testid}', '{$val['timuid']}', '{$time}','{$now_time}','{$adminid}')";
@@ -187,7 +189,7 @@ function mod_test()
     
 	//题目分类
 	$smarty->assign('test_category',  get_test_category());
-	
+	$smarty->assign('info', get_member_info());
 	$smarty->assign('action', 'do_mod_test');
 	$smarty->assign('page_title', '修改测试');
 	$smarty->display('test/test.htm');
@@ -206,6 +208,8 @@ function do_mod_test()
 	$limit_count	  = irequest('limit_count');
 	$now_time = now_time();
 	$time = time();
+
+	$info = $_POST['info'];
 
 	check_null($title, 			'测试标题');
 	check_null($limit_time, 			'测试时间');
@@ -237,7 +241,7 @@ function do_mod_test()
 		$update_col = "title = '{$title}', limit_count = '{$limit_count}', limit_time = '{$limit_time}', timu_catids = '{$catids}'";
 		$sql = "UPDATE test SET {$update_col} WHERE testid = '{$testid}'";
 		$db->query($sql);
-
+		$db->update('test',$info,"testid=$testid");
 		//修改测试时，题目做为新数据，重新插入测试表
 		$sql = "DELETE FROM test_timu WHERE testid = '{$testid}'";
 		$db->query($sql);
@@ -411,4 +415,12 @@ function swap(&$a, &$b)
 	$temp = $b;
 	$b = $a;
 	$a = $temp;
+}
+
+function get_member_info(){
+	$info['identity'] = ['选择身份','正式党员','预备党员','积极分子','群众','发展对象'];
+	$info['position'] = ['选择职位','固定党员','一般党员'];
+	$info['grade'] = ['选择等级','无','初级','中级','高级级','正高级'];
+	$info['rank_title'] = ['选择职称','无','工程','经济','会记','政工'];
+	return $info;
 }
