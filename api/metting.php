@@ -82,6 +82,7 @@ function sign(){
             showapierror('不是会议指定人群，签到失败');
         }
     }
+    showapierror('不是会议指定人群，签到失败');
 
     $sign_time = date('Y-m-d H:i:s',time());
     $sql = "SELECT * FROM metting_sign WHERE userid = '{$userid}' and mettingid = '{$mettingid}' and adminid='{$adminid}'";
