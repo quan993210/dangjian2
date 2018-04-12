@@ -195,8 +195,8 @@ function do_mod_metting()
 {
     global $db;
     $flg  = crequest('flg');
+    $data = $_POST['info'];
     if($flg){
-        $data = $_POST['info'];
         $data['flg'] = $flg;
     }else{
         $data['flg'] = 0;
