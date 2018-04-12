@@ -63,40 +63,40 @@ function my_metting(){
 
 function sign(){
     global $db;
-    $userid = $_GET['userid'];
-    $mettingid = $_GET['mettingid'];
-    $lng = $_GET['lng'];
-    $lat = $_GET['lat'];
-    $adminid  = $_GET["adminid"];
-    if(!$userid || !$mettingid){
-        showapierror('缺少签到参数,签到失败');
-    }
-    $sql = "SELECT * FROM member WHERE userid=$userid and adminid='{$adminid}'";
-    $member = $db->get_row($sql);
-
-    $sql = "SELECT * FROM metting WHERE id=$mettingid and adminid='{$adminid}'";
-    $metting = $db->get_row($sql);
-
-    if($metting['flg'] == 1){
-        if($metting['grade'] != $member['grade'] ||$metting['rank_title'] != $member['rank_title'] || $metting['identity'] != $member['identity'] || $metting['position'] != $member['position'] || $metting['is_party_affairs'] != $member['is_party_affairs'] || $metting['is_discipline'] != $member['is_discipline'] ||$metting['is_prepare'] != $member['is_prepare'] ||$metting['is_retire'] != $member['is_retire'] ){
-            showapierror('不是会议指定人群，签到失败');
-        }
-    }
-
-    $sign_time = date('Y-m-d H:i:s',time());
-    $sql = "SELECT * FROM metting_sign WHERE userid = '{$userid}' and mettingid = '{$mettingid}' and adminid='{$adminid}'";
-    $metting = $db->get_row($sql);
-
-
-    if(is_array($metting) && $metting){
-
-    }else{
-        $sql = "INSERT INTO metting_sign (mettingid,userid,username, sign_time,lng,lat,adminid) VALUES ('{$mettingid}','{$userid}','{$member['name']}', '{$sign_time}', '{$lng}', '{$lat}','{$adminid}')";
-        $db->query($sql);
-    }
-    $sql = "SELECT * FROM metting_sign WHERE userid = '{$userid}' and mettingid = '{$mettingid}' and adminid='{$adminid}'";
-    $metting = $db->get_row($sql);
-    showapisuccess($metting,'签到成功');
+//    $userid = $_GET['userid'];
+//    $mettingid = $_GET['mettingid'];
+//    $lng = $_GET['lng'];
+//    $lat = $_GET['lat'];
+//    $adminid  = $_GET["adminid"];
+//    if(!$userid || !$mettingid){
+//        showapierror('缺少签到参数,签到失败');
+//    }
+//    $sql = "SELECT * FROM member WHERE userid=$userid and adminid='{$adminid}'";
+//    $member = $db->get_row($sql);
+//
+//    $sql = "SELECT * FROM metting WHERE id=$mettingid and adminid='{$adminid}'";
+//    $metting = $db->get_row($sql);
+//
+//    if($metting['flg'] == 1){
+//        if($metting['grade'] != $member['grade'] ||$metting['rank_title'] != $member['rank_title'] || $metting['identity'] != $member['identity'] || $metting['position'] != $member['position'] || $metting['is_party_affairs'] != $member['is_party_affairs'] || $metting['is_discipline'] != $member['is_discipline'] ||$metting['is_prepare'] != $member['is_prepare'] ||$metting['is_retire'] != $member['is_retire'] ){
+//            showapierror('不是会议指定人群，签到失败');
+//        }
+//    }
+//
+//    $sign_time = date('Y-m-d H:i:s',time());
+//    $sql = "SELECT * FROM metting_sign WHERE userid = '{$userid}' and mettingid = '{$mettingid}' and adminid='{$adminid}'";
+//    $metting = $db->get_row($sql);
+//
+//
+//    if(is_array($metting) && $metting){
+//
+//    }else{
+//        $sql = "INSERT INTO metting_sign (mettingid,userid,username, sign_time,lng,lat,adminid) VALUES ('{$mettingid}','{$userid}','{$member['name']}', '{$sign_time}', '{$lng}', '{$lat}','{$adminid}')";
+//        $db->query($sql);
+//    }
+//    $sql = "SELECT * FROM metting_sign WHERE userid = '{$userid}' and mettingid = '{$mettingid}' and adminid='{$adminid}'";
+//    $metting = $db->get_row($sql);
+//    showapisuccess($metting,'签到成功');
 }
 
 /**
