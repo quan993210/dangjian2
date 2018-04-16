@@ -22,12 +22,33 @@ $action = $action == '' ? 'bind_user' : $action;
 
 switch ($action)
 {
+    case "get_openid":
+        get_openid();
+        break;
     case "bind_user":
         bind_user();
         break;
     case "login_openid":
         login_openid();
         break;
+}
+
+function get_openid(){
+    global $db;
+    if(isset($_POST['code']) && !empty($_POST['code'])) {
+        $code = $_POST['code'];
+        $encryptedData = $_POST['encryptedData'];
+        $iv = $_POST['iv'];
+        $session_key = wxCode($code);
+        $userInfo = decryptData($session_key,$encryptedData,$iv);
+        if ($userInfo && !empty($userInfo) && isset($userInfo['openId']) && !empty($userInfo['openId'])) {
+                showapisuccess($userInfo);
+        }else{
+            showapierror('参数错误！');
+        }
+    } else {
+        showapierror('参数错误！');
+    }
 }
 
 function bind_user(){
