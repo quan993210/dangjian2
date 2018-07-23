@@ -201,12 +201,12 @@ function del_news_category()
 	global $db;
 	$catid = irequest('catid');
 	
-	/*$sql = "DELETE FROM news_category WHERE catid = '{$catid}' OR pid = '{$catid}'";
-	$db->query($sql);*/
-
-	$update_col = "is_delete = '1'";
-	$sql = "UPDATE news_category SET {$update_col} WHERE catid = '{$catid}' OR pid = '{$catid}'";
+	$sql = "DELETE FROM news_category WHERE catid = '{$catid}' OR pid = '{$catid}'";
 	$db->query($sql);
+
+//	$update_col = "is_delete = '1'";
+//	$sql = "UPDATE news_category SET {$update_col} WHERE catid = '{$catid}' OR pid = '{$catid}'";
+//	$db->query($sql);
 	
 	$aid  = $_SESSION['admin_id'];
 	$text = '删除新闻分类，删除新闻分类ID：' . $catid;
@@ -228,16 +228,16 @@ function del_sel_news_category()
 	if ($catid == '')
 		alert_back('请选中需要删除的选项');
 	
-	/*$sql = "DELETE FROM news_category WHERE catid IN ({$catid}) OR pid IN ({$catid})";
-	$db->query($sql);*/
+	$sql = "DELETE FROM news_category WHERE catid IN ({$catid}) OR pid IN ({$catid})";
+	$db->query($sql);
 
-	$sql = "SELECT * FROM news_category WHERE catid IN ({$catid}) OR pid IN ({$catid})";
-	$news_category_all = $db->get_all($sql);
-	$update_col = "is_delete = '1'";
-	foreach($news_category_all as $key=>$val){
-		$sql = "UPDATE news_category SET {$update_col} WHERE catid = '{$val['catid']}'";
-		$db->query($sql);
-	}
+//	$sql = "SELECT * FROM news_category WHERE catid IN ({$catid}) OR pid IN ({$catid})";
+//	$news_category_all = $db->get_all($sql);
+//	$update_col = "is_delete = '1'";
+//	foreach($news_category_all as $key=>$val){
+//		$sql = "UPDATE news_category SET {$update_col} WHERE catid = '{$val['catid']}'";
+//		$db->query($sql);
+//	}
 	
 	$aid  = $_SESSION['admin_id'];
 	$text = '批量删除新闻分类，批量删除新闻分类ID：' . $catid;
