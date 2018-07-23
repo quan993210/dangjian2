@@ -254,8 +254,8 @@ function del_sel_news_category()
 function get_top_news_category()
 {
 	global $db;
-	
-	$sql = "SELECT catid, catname FROM news_category WHERE pid = 0 ORDER BY listorder";
+	$adminid  = $_SESSION["admin_id"];
+	$sql = "SELECT catid, catname FROM news_category WHERE adminid=$adminid and pid = 0 ORDER BY listorder";
 	$res = $db->get_all($sql);
 	
 	return $res;

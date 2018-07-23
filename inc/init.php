@@ -41,7 +41,7 @@
 		require(ROOT_PATH . 'inc/plugin/templatelite/class.template.php');
 	
 	require(ROOT_PATH . 'inc/plugin/PHPExcel/PHPExcel.php');
-    require(ROOT_PATH . 'inc/plugin/speech/AipSpeech.php');
+   // require(ROOT_PATH . 'inc/plugin/speech/AipSpeech.php');
 	
 	
 	//smarty配置
