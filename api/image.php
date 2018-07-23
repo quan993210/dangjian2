@@ -12,7 +12,7 @@ if (!session_id()) session_start();
 
 global $db;
 $adminid  = $_POST["adminid"];
-$sql = "SELECT * FROM carousel WHERE id =1 and adminid='{$adminid}'";
+$sql = "SELECT * FROM carousel WHERE adminid='{$adminid}'";
 $image = $db->get_row($sql);
 showapisuccess($image);
 
